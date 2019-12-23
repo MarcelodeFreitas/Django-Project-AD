@@ -7,7 +7,6 @@ class User(models.Model):
     cc = models.CharField("Número de cartão de cidadão", max_length=8)
     nif = models.CharField("Número de identificação fiscal", max_length=9)
     address = models.CharField("Morada", max_length=200)
-    pacient_number = models.CharField("Número de utente", max_length=9)
     cp = models.CharField("Código de postal", max_length=8)
     date = models.DateTimeField(auto_now_add=True) #guarda automaticamente a data a que foi criado
 
@@ -16,7 +15,6 @@ class AppUser(User):
         ('A', 'Admin'),
         ('M', 'Medic'),
         ('S', 'Secretary'),
-        ('P', 'Pacient'),
     )
     type = models.CharField("Tipo",max_length=1, choices=TYPE)
 

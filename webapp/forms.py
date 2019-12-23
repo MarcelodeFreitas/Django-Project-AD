@@ -2,9 +2,16 @@ from django import forms
 
 from .models import *
 
-class UserForm(forms.ModelForm):
+class AppUserForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = AppUser
         fields = [
-            'Nome', ''
+            'name',
+            'type',
+            'email',
+            'phone_number',
+            'cc',
+            'nif',
+            'address',
+            'cp'
         ]
