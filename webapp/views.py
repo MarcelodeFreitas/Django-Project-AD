@@ -63,13 +63,6 @@ def search_user_view(request):
     return render(request, "webapp/search_user.html", context)
 
 
-def get_admin_view(request):
-    admin = AppUser.objects.filter(type='A').values_list('name', 'email', 'phone_number', 'cc', 'nif', 'address', 'cp')
-    context = {
-        'admin': admin
-    }
-    return render(request, "webapp/get_admin.html", context)
-
 
 def register(request):
     if request.method == 'POST':
