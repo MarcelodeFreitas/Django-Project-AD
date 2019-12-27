@@ -1,8 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class User(models.Model):
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField("Nome",max_length=50)
-    username = models.UsernameField("Username", max_length=50, unique=True, default='')
     email = models.EmailField(max_length=256) # A CharField that checks that the value is a valid email address using EmailValidator.
     phone_number = models.CharField("Número de telemóvel", max_length=9)
     cc = models.CharField("Número de cartão de cidadão", max_length=8, unique=True)
@@ -15,7 +16,7 @@ class User(models.Model):
         return str((str(self.name), str(self.cc), str(self.nif), str(self.date)))
 
 
-class AppUser(User):
+class AppUser(Profile):
     TYPES = [
         ('A', 'Admin'),
         ('M', 'Medic'),
@@ -24,7 +25,7 @@ class AppUser(User):
     type = models.CharField("Tipo",max_length=1, choices=TYPES)
 
 
-class Pacient(User):
+class Pacient(Profile):
     pacient_number = models.CharField("Número de utente", max_length=9, unique=True)
     insurance = models.CharField('Seguro de saúde',max_length=30, blank=True) #blank=True num formulario poderá ser introduzido um valor vazio, ou seja, pode-se deixar em branco
 

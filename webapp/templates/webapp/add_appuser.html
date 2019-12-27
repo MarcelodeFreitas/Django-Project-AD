@@ -2,11 +2,12 @@
 
 {% block content %}
     <div class="container">
-        <h1>Add an user</h1>
+        <h1>Add a user</h1>
         <div>
-           <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
+           <form method="POST" action="{% url 'webapp:add_profile' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {{ profile_form.as_p }}
             <input type="submit" value="Save"/>
             </form>
         </div>

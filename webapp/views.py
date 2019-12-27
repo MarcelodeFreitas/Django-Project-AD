@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 
-
+'''
 def add_appuser_view(request):
     form = AppUserForm(request.POST)
     if form.is_valid():
@@ -14,6 +14,37 @@ def add_appuser_view(request):
         'form': form
     }
     return render(request, "webapp/add_appuser.html", context)
+'''
+def add_profile(request):
+    print(request.method)
+    if request.method == 'POST':
+        form = ExtendedUserCreationForm(request.POST)
+        profile_form = UserProfileForm(request.POST)
+        if form.is_valid() and profile_form.is_valid():
+            user = form.save()
+            print(user)
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            print(profile)
+            profile.save()
+
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+
+            return redirect('webapp:home')
+
+        else:
+            print("deu merda")
+            form = ExtendedUserCreationForm()
+            profile_form = UserProfileForm()
+
+    context = {'form': form, 'profile_form': profile_form}
+
+    return render(request, "webapp/add_appuser.html", context)
+
+
 
 
 def home(request):
