@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'webapp/w3.css' %}">
+    <title>Admin</title>
+</head>
+<body>
+<ul>
+    {% for i in admin %}
+        <li>{{ i }}</li>
+    {% endfor %}
+</ul>
+
+
+
+</body>
+</html>
