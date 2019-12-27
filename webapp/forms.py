@@ -1,8 +1,9 @@
 from django import forms
-
 from .models import *
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
-class AppUserForm(forms.ModelForm):
+class AppUserForm(UserCreationForm):
     class Meta:
         model = AppUser
         fields = '__all__'

@@ -49,16 +49,15 @@ def search_user_view(request):
         email = form.cleaned_data['email']
         phone_number = form.cleaned_data['phone_number']
         cc = form.cleaned_data['cc']
-        cc = form.cleaned_data['cc']
-        cc = form.cleaned_data['cc']
+        nif = form.cleaned_data['nif']
+        type = form.cleaned_data['type']
+        user_obj = AppUser.objects.filter(name=name, email=email, phone_number=phone_number,cc=cc,nif=nif,type=type)
 
-
-        name_obj = AppUser.objects.filter(name=name)
 
         form = RawAppUserForm()
     context = {
         'form' : form ,
-        'name' : name_obj
+        'name' : user_obj
     }
     return render(request, "webapp/search_user.html", context)
 

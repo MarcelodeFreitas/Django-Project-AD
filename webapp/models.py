@@ -2,6 +2,7 @@ from django.db import models
 
 class User(models.Model):
     name = models.CharField("Nome",max_length=50)
+    username = models.UsernameField("Username", max_length=50, unique=True, default='')
     email = models.EmailField(max_length=256) # A CharField that checks that the value is a valid email address using EmailValidator.
     phone_number = models.CharField("Número de telemóvel", max_length=9)
     cc = models.CharField("Número de cartão de cidadão", max_length=8, unique=True)
