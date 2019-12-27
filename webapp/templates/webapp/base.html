@@ -21,23 +21,25 @@
     </div>
 
     <center>
-    <div style="width:50%; position:center" class="w3-card">
+    <div style="width:30%; position:center; float: left" class="w3-card">
         <br/>
         <div class="w3-container w3-light-blue">
             <h3><b>Admin Menu</b></h3>
         </div>
         <div class="w3-card">
             <ul class="w3-ul w3-hoverable">
-                <li><a href="add_appuser">Adicionar User</a></li>
-                <li>ola</li>
+                <li>{% block nav-add_user %}<a href="{% url 'webapp:add_appuser' %}">Add App User</a>{% endblock %}</li>
+                <li>{% block nav-add_pacient %}<a href="{% url 'webapp:add_pacient' %}">Add Pacient</a>{% endblock %}</li>
             </ul>
         </div>
     </div>
     </center>
 
+    <div style="width:70%; position:center; float: right" class="w3-card w3-padding">
     {% block content %}
         Replace me!
     {% endblock %}
+    </div>
 
 </body>
 </html>

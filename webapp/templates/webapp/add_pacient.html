@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" href="{% static 'webapp/w3.css' %}">
-    <title>Add User</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'webapp/style.css' %}" type="text/css">
-</head>
-<body>
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+
     <div class="container">
         <h1>Add a pacient</h1>
         <div>
@@ -17,5 +12,5 @@
             </form>
         </div>
     </div>
-</body>
-</html>
+
+{% endblock %}
