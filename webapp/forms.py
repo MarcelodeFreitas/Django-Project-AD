@@ -7,7 +7,6 @@ class AppUserForm(forms.ModelForm):
         model = AppUser
         fields = '__all__'
 
-
 class PacientForm(forms.ModelForm):
     class Meta:
         model = Pacient
