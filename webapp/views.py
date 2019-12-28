@@ -4,45 +4,37 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 
-'''
-def add_appuser_view(request):
-    form = AppUserForm(request.POST)
-    if form.is_valid():
-        form.save()
-        form = AppUserForm()
-    context = {
-        'form': form
-    }
-    return render(request, "webapp/add_appuser.html", context)
-'''
+
+
+
+
 def add_profile(request):
     print(request.method)
-    if request.method == 'POST':
-        form = ExtendedUserCreationForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
-        if form.is_valid() and profile_form.is_valid():
-            user = form.save()
-            print(user)
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            print(profile)
-            profile.save()
+    form = ExtendedUserCreationForm(request.POST or None)
+    profile_form = UserProfileForm(request.POST or None)
+    if form.is_valid() and profile_form.is_valid():
+        user = form.save()
+        print(user)
+        profile = profile_form.save(commit=False)
+        profile.user = user
+        print(profile)
+        profile.save()
 
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+        login(request, user)
 
-            return redirect('webapp:home')
+        return redirect('webapp:home')
 
-        else:
-            print("deu merda")
-            form = ExtendedUserCreationForm()
-            profile_form = UserProfileForm()
+    else:
+        print("Erro")
+        form = ExtendedUserCreationForm()
+        profile_form = UserProfileForm()
 
     context = {'form': form, 'profile_form': profile_form}
 
-    return render(request, "webapp/add_appuser.html", context)
+    return render(request, "webapp/add_profile.html", context)
 
 
 
@@ -84,7 +76,6 @@ def search_user_view(request):
         type = form.cleaned_data['type']
         user_obj = AppUser.objects.filter(name=name, email=email, phone_number=phone_number,cc=cc,nif=nif,type=type)
 
-
         form = RawAppUserForm()
     context = {
         'form' : form ,
@@ -92,23 +83,3 @@ def search_user_view(request):
     }
     return render(request, "webapp/search_user.html", context)
 
-
-
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('webapp:home')
-    else:
-        form = UserCreationForm()
-    context = {'form': form}
-    return render(request, 'registration/register.html', context)
-
-# pode-se alterar o UserCreationForm, criando o form.py,
-# cria-se uma nova classe extende-se o UserCreationForm
-# e adiciona-se os campos adicionais
