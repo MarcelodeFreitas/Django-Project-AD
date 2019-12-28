@@ -9,7 +9,7 @@ from django.contrib.auth.models import *
 from django.http import HttpResponse
 
 @login_required
-def add_profile(request):
+def add_profile_view(request):
     print(request.method)
     form = ExtendedUserCreationForm(request.POST or None)
     profile_form = UserProfileForm(request.POST or None)

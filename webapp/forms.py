@@ -78,7 +78,7 @@ class AppointmentForm(forms.ModelForm):
 
 
 
-'''class RawAppUserForm(forms.Form):
+class RawAppUserForm(forms.Form):
     name = forms.CharField(required=False)
     email = forms.EmailField(required=False)
     phone_number = forms.CharField(required=False)
@@ -93,7 +93,7 @@ class AppointmentForm(forms.ModelForm):
         ('S', 'Secretary'),
     ]
 
-    type = forms.ChoiceField(required=True, choices=TYPES)'''
+    type = forms.ChoiceField(required=True, choices=TYPES)
 
 
 
