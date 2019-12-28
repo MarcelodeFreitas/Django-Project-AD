@@ -3,10 +3,8 @@ from .models import *
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-
-
-
-
+from django.contrib.auth.models import *
+from django.http import HttpResponse
 
 def add_profile(request):
     print(request.method)
@@ -16,6 +14,7 @@ def add_profile(request):
         user = form.save()
         print(user)
         profile = profile_form.save(commit=False)
+
         profile.user = user
         print(profile)
         profile.save()
@@ -25,10 +24,31 @@ def add_profile(request):
         user = authenticate(username=username, password=password)
         login(request, user)
 
+        type = profile_form.cleaned_data.get('type')
+
+        if type == 'A':
+            user = User.objects.get(username=form.cleaned_data.get('username'))
+            mygroup, created = Group.objects.get_or_create(name='Admin')
+            mygroup.user_set.add(user)
+            mygroup.save()
+
+        if type == 'M':
+            user = User.objects.get(username=form.cleaned_data.get('username'))
+            mygroup, created = Group.objects.get_or_create(name='Medic')
+            mygroup.user_set.add(user)
+            mygroup.save()
+
+        if type == 'S':
+            user = User.objects.get(username=form.cleaned_data.get('username'))
+            mygroup, created = Group.objects.get_or_create(name='Secretary')
+            mygroup.user_set.add(user)
+            mygroup.save()
+
         return redirect('webapp:home')
 
     else:
-        print("Erro")
+        print("Invalid field, please try again!")
+
         form = ExtendedUserCreationForm()
         profile_form = UserProfileForm()
 
