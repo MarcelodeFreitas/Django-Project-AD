@@ -13,7 +13,7 @@ class Profile(models.Model):
     date = models.DateTimeField(auto_now_add=True) #guarda automaticamente a data a que foi criado
 
     def __str__(self):
-        return str((str(self.name), str(self.cc), str(self.nif), str(self.date)))
+        return str((str(self.name), str(self.type)))
 
 
 class AppUser(Profile):
@@ -25,12 +25,20 @@ class AppUser(Profile):
     type = models.CharField("Tipo",max_length=1, choices=TYPES)
 
 
-class Pacient(Profile):
+class Pacient(models.Model):
+    name = models.CharField("Nome", max_length=50)
+    email = models.EmailField(max_length=256)  # A CharField that checks that the value is a valid email address using EmailValidator.
+    phone_number = models.CharField("Número de telemóvel", max_length=9)
+    cc = models.CharField("Número de cartão de cidadão", max_length=8, unique=True)
+    nif = models.CharField("Número de identificação fiscal", max_length=9, unique=True)
+    address = models.CharField("Morada", max_length=200)
+    cp = models.CharField("Código de postal", max_length=8)
+    date = models.DateTimeField(auto_now_add=True)  # guarda automaticamente a data a que foi criado
     pacient_number = models.CharField("Número de utente", max_length=9, unique=True)
     insurance = models.CharField('Seguro de saúde',max_length=30, blank=True) #blank=True num formulario poderá ser introduzido um valor vazio, ou seja, pode-se deixar em branco
 
     def __str__(self):
-        return str((str(self.name), str(self.cc), str(self.nif), str(self.insurance), str(self.pacient_number), str(self.date)))
+        return str((str(self.name), str(self.pacient_number), str(self.insurance)))
 
 
 class Drug(models.Model):

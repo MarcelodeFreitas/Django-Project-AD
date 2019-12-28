@@ -37,23 +37,48 @@ class UserProfileForm(forms.ModelForm):
         ]
 
 
-
-class AppUserForm(forms.ModelForm):
+'''class AppUserForm(forms.ModelForm):
     class Meta:
         model = AppUser
-        fields = '__all__'
+        fields = '__all__'''
+
 
 class PacientForm(forms.ModelForm):
     class Meta:
         model = Pacient
-        fields = '__all__'
+        fields = [
+            'name',
+            'email',
+            'phone_number',
+            'cc',
+            'nif',
+            'address',
+            'cp',
+            'pacient_number',
+            'insurance',
+        ]
+
 
 class DrugForm(forms.ModelForm):
     class Meta:
         model = Drug
         fields = '__all__'
 
-class RawAppUserForm(forms.Form):
+
+class ExamForm(forms.ModelForm):
+    class Meta:
+        model = Exam
+        fields = '__all__'
+
+
+class AppointmentForm(forms.ModelForm):
+    class Meta:
+        model = Appointment
+        fields = '__all__'
+
+
+
+'''class RawAppUserForm(forms.Form):
     name = forms.CharField(required=False)
     email = forms.EmailField(required=False)
     phone_number = forms.CharField(required=False)
@@ -68,7 +93,7 @@ class RawAppUserForm(forms.Form):
         ('S', 'Secretary'),
     ]
 
-    type = forms.ChoiceField(required=True, choices=TYPES)
+    type = forms.ChoiceField(required=True, choices=TYPES)'''
 
 
 

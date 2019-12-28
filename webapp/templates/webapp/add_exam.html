@@ -1,15 +1,16 @@
 {% extends 'webapp/base.html' %}
 
 {% block content %}
+
     <div class="container">
-        <h1>Add a user</h1>
+        <h1>Add Exam</h1>
         <div>
-           <form method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                {{ profile_form.as_p }}
+           <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
             <input type="submit" value="Save"/>
             </form>
         </div>
     </div>
+
 {% endblock %}
