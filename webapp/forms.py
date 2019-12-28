@@ -71,6 +71,11 @@ class ExamForm(forms.ModelForm):
         fields = '__all__'
 
 
+class PrescriptionForm(forms.ModelForm):
+    class Meta:
+        model = Prescription
+        fields = '__all__'
+
 class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment

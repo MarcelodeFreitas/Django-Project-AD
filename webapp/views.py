@@ -102,6 +102,18 @@ def add_exam_view(request):
 
 
 @login_required
+def add_prescription_view(request):
+    form = PrescriptionForm(request.POST)
+    if form.is_valid():
+        form.save()
+        form = PrescriptionForm()
+    context = {
+        'form': form
+    }
+    return render(request, "webapp/add_prescription.html", context)
+
+
+@login_required
 def add_appointment_view(request):
     form = AppointmentForm(request.POST)
     if form.is_valid():
