@@ -18,25 +18,21 @@ def login_view(request):
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
         user = authenticate(request, username=username, password=password)
-        print(user.is_superuser)
-        if user.is_superuser:
+        #print(user.is_superuser)
+        if request.user.is_superuser:
             login(request, user)
             return redirect('webapp:home')
         else:
-            if user is not None:
+            if request.user is not None:
                 app_user = AppUser.objects.get(user=user)
-                login(request,user)
+                login(request, user)
                 return redirect('webapp:home')
-            else:
-                print("erro")
-                message = "Incorrect username or password!"
+
     context = {
-        'message' : message,
         'form': form,
         'user': user,
         'appuser': app_user,
     }
-
     return render(request, "webapp/login.html", context)
 
 def logout_view(request):
@@ -105,7 +101,11 @@ def add_profile_view(request):
         form = ExtendedUserCreationForm()
         profile_form = UserProfileForm()
 
-    context = {'form': form, 'profile_form': profile_form, 'appuser' : appuser}
+    context = {
+        'form': form,
+        'profile_form': profile_form,
+        'appuser': appuser
+    }
 
     return render(request, "webapp/add_profile.html", context)
 

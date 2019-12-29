@@ -13,13 +13,11 @@
     {% block menu %}
     {% endblock %}
 
-
-
     <div class="w3-display-container w3-card">
         <br/>
         <img src="{% static 'webapp/images/base.jpg' %}" alt="Lights" style="width:100%"/>
         <div class="w3-display-bottomleft  w3-round-medium w3-padding"><small class="w3-text-black">
-            {% if user.is_authenticated %}
+            {% if request.user.is_authenticated %}
                 <p><b>Loged in as:</b> {{ user.username }}</p>
             {% else %}
                 <p>Not loged in!</p>

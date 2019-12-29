@@ -2,11 +2,23 @@ from django import forms
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate
 
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput()) #esconde a palavra passe do ecrã
 
+    def clean(self, *args, **kwargs):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if not user:
+                raise forms.ValidationError('Incorrect username or password!')
+            if not user.check_password(password):
+                raise forms.ValidationError('Incorrect username or password!')
+        return super(LoginForm, self).clean(*args, **kwargs)
 
 class ExtendedUserCreationForm(UserCreationForm):
 
@@ -26,6 +38,14 @@ class ExtendedUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+    def clean_email(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+
+        if password1 != password2:
+            raise forms.ValidationError("Passwords must match")
+        return password1
 
 
 class UserProfileForm(forms.ModelForm):
