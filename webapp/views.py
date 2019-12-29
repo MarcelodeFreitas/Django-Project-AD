@@ -128,6 +128,8 @@ def add_appointment_view(request):
 @login_required
 def search_user_view(request):
     form = RawAppUserForm(request.POST)
+    obj = None
+
     if form.is_valid():
         name = form.cleaned_data['name']
         email = form.cleaned_data['email']
@@ -135,12 +137,119 @@ def search_user_view(request):
         cc = form.cleaned_data['cc']
         nif = form.cleaned_data['nif']
         type = form.cleaned_data['type']
-        user_obj = AppUser.objects.filter(name=name, email=email, phone_number=phone_number,cc=cc,nif=nif,type=type)
+        obj = AppUser.objects.all()
+
+        if name:
+            obj = obj.filter(name=name)
+        if email:
+            obj = obj.filter(email=email)
+        if phone_number:
+            obj = obj.filter(phone_number=phone_number)
+        if cc:
+            obj = obj.filter(cc=cc)
+        if nif:
+            obj = obj.filter(nif=nif)
+        if type=='NONE':
+            type = None
+        if type:
+            obj = obj.filter(type=type)
 
         form = RawAppUserForm()
     context = {
         'form' : form ,
-        'name' : user_obj
+        'obj' : obj
     }
     return render(request, "webapp/search_user.html", context)
 
+
+@login_required
+def search_pacient_view(request):
+    form = RawPacientForm(request.POST)
+    obj = None
+
+    if form.is_valid():
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        phone_number = form.cleaned_data['phone_number']
+        cc = form.cleaned_data['cc']
+        nif = form.cleaned_data['nif']
+        pacient_number = form.cleaned_data['pacient_number']
+        insurance = form.cleaned_data['insurance']
+        obj = Pacient.objects.all()
+
+        if name:
+            obj = obj.filter(name=name)
+        if email:
+            obj = obj.filter(email=email)
+        if phone_number:
+            obj = obj.filter(phone_number=phone_number)
+        if cc:
+            obj = obj.filter(cc=cc)
+        if nif:
+            obj = obj.filter(nif=nif)
+        if pacient_number:
+            obj = obj.filter(pacient_number=pacient_number)
+        if insurance:
+            obj = obj.filter(insurance=insurance)
+
+        form = RawPacientForm()
+    context = {
+        'form' : form ,
+        'obj' : obj
+    }
+    return render(request, "webapp/search_pacient.html", context)
+
+
+@login_required
+def search_drug_view(request):
+    form = RawDrugForm(request.POST)
+    obj = None
+
+    if form.is_valid():
+        name = form.cleaned_data['name']
+        dci = form.cleaned_data['dci']
+        dosage = form.cleaned_data['dosage']
+        generic = form.cleaned_data['generic']
+        how_to_take = form.cleaned_data['how_to_take']
+        obj = Drug.objects.all()
+
+        if name:
+            obj = obj.filter(name=name)
+        if dci:
+            obj = obj.filter(dci=dci)
+        if dosage:
+            obj = obj.filter(dosage=dosage)
+        if generic:
+            obj = obj.filter(generic=generic)
+        if how_to_take:
+            obj = obj.filter(how_to_take=how_to_take)
+
+        form = RawDrugForm()
+    context = {
+        'form' : form ,
+        'obj' : obj
+    }
+    return render(request, "webapp/search_drug.html", context)
+
+
+@login_required
+def search_prescription_view(request):
+    form = RawPrescriptionForm(request.POST)
+    obj = None
+
+    if form.is_valid():
+        medic_username = form.cleaned_data['medic_username']
+
+        user = User.objects.get(username=medic_username)
+        med = AppUser.objects.get(user=user)
+        obj = Prescription.objects.all()
+
+        if med:
+            obj = obj.filter(med=med)
+
+        form = RawDrugForm()
+    context = {
+        'form' : form ,
+        'obj' : obj
+    }
+    return render(request, "webapp/search_prescription.html", context)

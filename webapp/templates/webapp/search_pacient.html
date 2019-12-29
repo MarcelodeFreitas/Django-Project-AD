@@ -18,7 +18,8 @@
                     <th>Phone Number</th>
                     <th>CC</th>
                     <th>NIF</th>
-                    <th>Type</th>
+                    <th>Pacient Number</th>
+                    <th>Insurance</th>
                 </tr>
             </thead>
         {% for i in obj %}
@@ -28,7 +29,8 @@
                 <td>{{ i.phone_number }}</td>
                 <td>{{ i.cc }}</td>
                 <td>{{ i.nif }}</td>
-                <td>{{ i.type }}</td>
+                <td>{{ i.pacient_number }}</td>
+                <td>{{ i.insurance }}</td>
             </tr>
         {% endfor %}
         </table>

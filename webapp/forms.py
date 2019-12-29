@@ -37,12 +37,6 @@ class UserProfileForm(forms.ModelForm):
         ]
 
 
-'''class AppUserForm(forms.ModelForm):
-    class Meta:
-        model = AppUser
-        fields = '__all__'''
-
-
 class PacientForm(forms.ModelForm):
     class Meta:
         model = Pacient
@@ -76,14 +70,14 @@ class PrescriptionForm(forms.ModelForm):
         model = Prescription
         fields = '__all__'
 
+
 class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = '__all__'
 
 
-
-'''class RawAppUserForm(forms.Form):
+class RawAppUserForm(forms.Form):
     name = forms.CharField(required=False)
     email = forms.EmailField(required=False)
     phone_number = forms.CharField(required=False)
@@ -93,12 +87,56 @@ class AppointmentForm(forms.ModelForm):
     cp = forms.CharField(required=False)
 
     TYPES = [
+        ('NONE', '-'),
         ('A', 'Admin'),
         ('M', 'Medic'),
         ('S', 'Secretary'),
     ]
 
-    type = forms.ChoiceField(required=True, choices=TYPES)'''
+    type = forms.ChoiceField(required=False, choices=TYPES)
+
+
+class RawPacientForm(forms.Form):
+    name = forms.CharField(required=False)
+    email = forms.EmailField(required=False)
+    phone_number = forms.CharField(required=False)
+    cc = forms.CharField(required=False)
+    nif = forms.CharField(required=False)
+    address = forms.CharField(required=False)
+    cp = forms.CharField(required=False)
+    pacient_number = forms.CharField(required=False)
+    insurance = forms.CharField(required=False)
+
+
+class RawDrugForm(forms.Form):
+    name = forms.CharField(required=False)
+    dci = forms.CharField(required=False)
+    dosage = forms.CharField(required=False)
+    generic = forms.BooleanField(required=False)
+    how_to_take = forms.CharField(required=False)
+
+
+class RawPrescriptionForm(forms.Form):
+    medic_username = forms.Charfield(required=False)
+    pacient_number = forms.Charfield(required=False)
+    #drug =
+    #aditional_info =
+
+
+class RawExamForm(forms.Form):
+    name = forms.CharField(required=False)
+    dci = forms.CharField(required=False)
+    dosage = forms.CharField(required=False)
+    generic = forms.BooleanField(required=False)
+    how_to_take = forms.CharField(required=False)
+
+class RawAppointmentForm(forms.Form):
+    name = forms.CharField(required=False)
+    dci = forms.CharField(required=False)
+    dosage = forms.CharField(required=False)
+    generic = forms.BooleanField(required=False)
+    how_to_take = forms.CharField(required=False)
+
 
 
 

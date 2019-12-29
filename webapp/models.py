@@ -3,13 +3,13 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField("Nome",max_length=50)
+    name = models.CharField("Name",max_length=50)
     email = models.EmailField(max_length=256) # A CharField that checks that the value is a valid email address using EmailValidator.
-    phone_number = models.CharField("Número de telemóvel", max_length=9)
-    cc = models.CharField("Número de cartão de cidadão", max_length=8, unique=True)
-    nif = models.CharField("Número de identificação fiscal", max_length=9, unique=True)
-    address = models.CharField("Morada", max_length=200)
-    cp = models.CharField("Código de postal", max_length=8)
+    phone_number = models.CharField("Phone Number", max_length=9)
+    cc = models.CharField("CC", max_length=8, unique=True)
+    nif = models.CharField("NIF", max_length=9, unique=True)
+    address = models.CharField("Address", max_length=200)
+    cp = models.CharField("Postal Code", max_length=8)
     date = models.DateTimeField(auto_now_add=True) #guarda automaticamente a data a que foi criado
 
     def __str__(self):
@@ -22,31 +22,31 @@ class AppUser(Profile):
         ('M', 'Medic'),
         ('S', 'Secretary'),
     ]
-    type = models.CharField("Tipo",max_length=1, choices=TYPES)
+    type = models.CharField("Type",max_length=1, choices=TYPES)
 
 
 class Pacient(models.Model):
-    name = models.CharField("Nome", max_length=50)
+    name = models.CharField("Name", max_length=50)
     email = models.EmailField(max_length=256)  # A CharField that checks that the value is a valid email address using EmailValidator.
-    phone_number = models.CharField("Número de telemóvel", max_length=9)
-    cc = models.CharField("Número de cartão de cidadão", max_length=8, unique=True)
-    nif = models.CharField("Número de identificação fiscal", max_length=9, unique=True)
-    address = models.CharField("Morada", max_length=200)
-    cp = models.CharField("Código de postal", max_length=8)
+    phone_number = models.CharField("Phone Number", max_length=9)
+    cc = models.CharField("CC", max_length=8, unique=True)
+    nif = models.CharField("NIF", max_length=9, unique=True)
+    address = models.CharField("Address", max_length=200)
+    cp = models.CharField("Postal Code", max_length=8)
     date = models.DateTimeField(auto_now_add=True)  # guarda automaticamente a data a que foi criado
-    pacient_number = models.CharField("Número de utente", max_length=9, unique=True)
-    insurance = models.CharField('Seguro de saúde',max_length=30, blank=True) #blank=True num formulario poderá ser introduzido um valor vazio, ou seja, pode-se deixar em branco
+    pacient_number = models.CharField("Pacient Number", max_length=9, unique=True)
+    insurance = models.CharField('Insurance',max_length=30, blank=True) #blank=True num formulario poderá ser introduzido um valor vazio, ou seja, pode-se deixar em branco
 
     def __str__(self):
         return str((str(self.name), str(self.pacient_number), str(self.insurance)))
 
 
 class Drug(models.Model):
-    name = models.CharField("Nome",max_length=50)
-    dci = models.CharField("Denominação comum internacional", max_length=50)
-    dosage = models.CharField("Posologia",max_length=10)
-    generic = models.BooleanField(verbose_name="Genérico")
-    how_to_take = models.CharField("Forma de tomar", max_length=250)
+    name = models.CharField("Name",max_length=50)
+    dci = models.CharField("DCI", max_length=50)
+    dosage = models.CharField("Dosage",max_length=10)
+    generic = models.BooleanField(verbose_name="Generic")
+    how_to_take = models.CharField("How to take", max_length=250)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -54,10 +54,10 @@ class Drug(models.Model):
 
 
 class Prescription(models.Model):
-    medic = models.ForeignKey(AppUser(type='M'),verbose_name="Médico", on_delete=models.PROTECT) #CASCADE vai eliminar a prescrição se o médico for eliminado, PROTECT não vai permitir eliminar médicos que tenham passado prescrições
-    pacient = models.ForeignKey(Pacient(),verbose_name="Paciente", on_delete=models.PROTECT)
-    drug = models.ForeignKey(Drug(),verbose_name="Medicamento", on_delete=models.PROTECT)
-    aditional_info = models.CharField("Notas", max_length=500)
+    medic = models.ForeignKey(AppUser(type='M'),verbose_name="Medic", on_delete=models.PROTECT) #CASCADE vai eliminar a prescrição se o médico for eliminado, PROTECT não vai permitir eliminar médicos que tenham passado prescrições
+    pacient = models.ForeignKey(Pacient(),verbose_name="Pacient", on_delete=models.PROTECT)
+    drug = models.ForeignKey(Drug(),verbose_name="Drug", on_delete=models.PROTECT)
+    aditional_info = models.TextField("Notes", max_length=500)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -65,11 +65,11 @@ class Prescription(models.Model):
 
 
 class Exam(models.Model):
-    medic = models.ForeignKey(AppUser(type='M'), verbose_name="Médico",on_delete=models.PROTECT)  # CASCADE vai eliminar a prescrição se o médico for eliminado, PROTECT não vai permitir eliminar médicos que tenham passado prescrições
-    pacient = models.ForeignKey(Pacient(), verbose_name="Paciente", on_delete=models.PROTECT)
-    exam_type = models.CharField("Tipo de exame", max_length=30)
-    exam_result = models.URLField(verbose_name="Resultado do exame", blank=True) #será um link para download de um ficheiro
-    aditional_info = models.CharField("Notas", max_length=500)
+    medic = models.ForeignKey(AppUser(type='M'), verbose_name="Medic",on_delete=models.PROTECT)  # CASCADE vai eliminar a prescrição se o médico for eliminado, PROTECT não vai permitir eliminar médicos que tenham passado prescrições
+    pacient = models.ForeignKey(Pacient(), verbose_name="Pacient", on_delete=models.PROTECT)
+    exam_type = models.CharField("Type of exam", max_length=30)
+    exam_result = models.URLField(verbose_name="Result of exam", blank=True) #será um link para download de um ficheiro
+    aditional_info = models.TextField("Notes", max_length=500)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -77,9 +77,9 @@ class Exam(models.Model):
 
 
 class Appointment(models.Model):
-    medic = models.ForeignKey(AppUser(type='M'), verbose_name="Médico", on_delete=models.PROTECT)  # CASCADE vai eliminar a prescrição se o médico for eliminado, PROTECT não vai permitir eliminar médicos que tenham passado prescrições
-    pacient = models.ForeignKey(Pacient(), verbose_name="Paciente", on_delete=models.PROTECT)
-    aditional_info = models.CharField("Notas", max_length=500)
+    medic = models.ForeignKey(AppUser(type='M'), verbose_name="Medic", on_delete=models.PROTECT)  # CASCADE vai eliminar a prescrição se o médico for eliminado, PROTECT não vai permitir eliminar médicos que tenham passado prescrições
+    pacient = models.ForeignKey(Pacient(), verbose_name="Pacient", on_delete=models.PROTECT)
+    aditional_info = models.TextField("Notes", max_length=500)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
