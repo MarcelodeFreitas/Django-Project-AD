@@ -16,6 +16,9 @@ urlpatterns = [
     path('search_user/', views.search_user_view, name='search_user'),
     path('search_pacient/', views.search_pacient_view, name='search_pacient'),
     path('search_drug/', views.search_drug_view, name='search_drug'),
+    path('search_appointment/', views.search_appointment_view, name='search_appointment'),
+    path('search_prescription/', views.search_prescription_view, name='search_prescription'),
+    path('search_exam/', views.search_exam_view, name='search_exam'),
 ]
 
 

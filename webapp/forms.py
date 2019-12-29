@@ -74,11 +74,11 @@ class PrescriptionForm(forms.ModelForm):
         model = Prescription
         fields = '__all__'
 
+
 class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = '__all__'
-
 
 
 class RawAppUserForm(forms.Form):
@@ -120,26 +120,18 @@ class RawDrugForm(forms.Form):
     how_to_take = forms.CharField(required=False)
 
 
+class RawAppointmentForm(forms.Form):
+    medic_username = forms.CharField()
+    pacient_number = forms.CharField(max_length=9)
+
+
 class RawPrescriptionForm(forms.Form):
     medic_username = forms.CharField()
     pacient_number = forms.CharField(max_length=9)
     drug_id = forms.IntegerField()
-    date = forms.DateTimeField()
+
 
 class RawExamForm(forms.Form):
     medic_username = forms.CharField()
     pacient_number = forms.CharField(max_length=9)
     exam_type = forms.CharField
-    date = forms.DateTimeField()
-
-
-class RawAppointmentForm(forms.Form):
-    name = forms.CharField(required=False)
-    dci = forms.CharField(required=False)
-    dosage = forms.CharField(required=False)
-    generic = forms.BooleanField(required=False)
-    how_to_take = forms.CharField(required=False)
-
-
-
-

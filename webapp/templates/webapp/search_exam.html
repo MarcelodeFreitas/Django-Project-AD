@@ -1,4 +1,4 @@
-{% extends 'webapp/base.html' %}
+{% extends 'webapp/index.html' %}
 
 {% block content %}
     <form action="." method="POST"> {% csrf_token %}
@@ -17,7 +17,7 @@
                     <th>Pacient</th>
                     <th>Type of Exam</th>
                     <th>Result of Exam</th>
-                    <th>Notes</th>
+                    <th>Date</th>
                 </tr>
             </thead>
         {% for i in obj %}
@@ -26,7 +26,7 @@
                 <td>{{ i.pacient }}</td>
                 <td>{{ i.exam_type }}</td>
                 <td>{{ i.exam_result }}</td>
-                <td>{{ i.aditional_info }}</td>
+                <td>{{ i.date }}</td>
             </tr>
         {% endfor %}
         </table>

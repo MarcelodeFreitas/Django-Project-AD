@@ -16,7 +16,7 @@
                     <th>Medic</th>
                     <th>Pacient</th>
                     <th>Drug</th>
-                    <th>Notes</th>
+                    <th>Date</th>
                 </tr>
             </thead>
         {% for i in obj %}
@@ -24,7 +24,7 @@
                 <td>{{ i.medic }}</td>
                 <td>{{ i.pacient }}</td>
                 <td>{{ i.drug }}</td>
-                <td>{{ i.aditional_info }}</td>
+                <td>{{ i.date }}</td>
             </tr>
         {% endfor %}
         </table>
