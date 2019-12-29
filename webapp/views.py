@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import *
+from django.http import *
 
 
 def login_view(request):
@@ -44,7 +45,10 @@ def home_view(request):
         context = {}
     else :
         if request.user.is_authenticated:
-            appuser = AppUser.objects.get(user=request.user)
+            try:
+                appuser = AppUser.objects.get(user=request.user)
+            except AppUser.DoesNotExist:
+                raise HttpResponse('Object Appuser does not exist!')
             context = {
                 'appuser' : appuser
             }
@@ -58,7 +62,10 @@ def add_profile_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = ExtendedUserCreationForm(request.POST or None)
     profile_form = UserProfileForm(request.POST or None)
@@ -116,7 +123,10 @@ def add_pacient_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = PacientForm(request.POST)
     if form.is_valid():
@@ -139,7 +149,10 @@ def add_drug_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = DrugForm(request.POST)
     if form.is_valid():
@@ -158,7 +171,10 @@ def add_prescription_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = PrescriptionForm(request.POST)
     if form.is_valid():
@@ -176,7 +192,10 @@ def add_exam_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = ExamForm(request.POST)
     if form.is_valid():
@@ -195,7 +214,10 @@ def add_appointment_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = AppointmentForm(request.POST)
     if form.is_valid():
@@ -215,7 +237,10 @@ def search_user_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = RawAppUserForm(request.POST)
     obj = None
@@ -266,7 +291,10 @@ def search_pacient_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = RawPacientForm(request.POST)
     obj = None
@@ -318,7 +346,10 @@ def search_drug_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = RawDrugForm(request.POST)
     obj = None
@@ -358,7 +389,10 @@ def search_appointment_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = RawAppointmentForm(request.POST or None)
     obj = None
@@ -367,9 +401,20 @@ def search_appointment_view(request):
         medic_username = form.cleaned_data['medic_username']
         pacient_number = form.cleaned_data['pacient_number']
 
-        pac = Pacient.objects.get(pacient_number=pacient_number)
-        user = User.objects.get(username=medic_username)
-        med = AppUser.objects.get(user=user)
+        try:
+            pac = Pacient.objects.get(pacient_number=pacient_number)
+        except Pacient.DoesNotExist:
+            raise HttpResponse('Object Pacient does not exist!')
+
+        try:
+            user = User.objects.get(username=medic_username)
+        except User.DoesNotExist:
+            raise HttpResponse('Object User does not exist!')
+
+        try:
+            med = AppUser.objects.get(user=user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Medic does not exist!')
 
         obj = Appointment.objects.all()
 
@@ -394,7 +439,10 @@ def search_prescription_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = RawPrescriptionForm(request.POST)
     obj = None
@@ -404,10 +452,24 @@ def search_prescription_view(request):
         pacient_number = form.cleaned_data['pacient_number']
         drug_id = form.cleaned_data['drug_id']
 
-        drug = Drug.objects.get(id=drug_id)
-        pac = Pacient.objects.get(pacient_number=pacient_number)
-        user = User.objects.get(username=medic_username)
-        med = AppUser.objects.get(user=user)
+        try:
+            drug = Drug.objects.get(id=drug_id)
+        except Drug.DoesNotExist:
+            raise HttpResponse('Object Drug does not exist!')
+
+        try:
+            pac = Pacient.objects.get(pacient_number=pacient_number)
+        except Pacient.DoesNotExist:
+            raise HttpResponse('Object Pacient does not exist!')
+
+        try:
+            user = User.objects.get(username=medic_username)
+        except User.DoesNotExist:
+            raise HttpResponse('Object User does not exist!')
+        try:
+            med = AppUser.objects.get(user=user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Medic does not exist!')
 
         obj = Prescription.objects.all()
 
@@ -433,7 +495,10 @@ def search_exam_view(request):
     if request.user.is_superuser:
         appuser = None
     elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
     form = RawExamForm(request.POST or None)
     obj = None
@@ -443,9 +508,20 @@ def search_exam_view(request):
         pacient_number = form.cleaned_data['pacient_number']
         exam_type = form.cleaned_data['exam_type']
 
-        pac = Pacient.objects.get(pacient_number=pacient_number)
-        user = User.objects.get(username=medic_username)
-        med = AppUser.objects.get(user=user)
+        try:
+            pac = Pacient.objects.get(pacient_number=pacient_number)
+        except Pacient.DoesNotExist:
+            raise HttpResponse('Object Pacient does not exist!')
+
+        try:
+            user = User.objects.get(username=medic_username)
+        except User.DoesNotExist:
+            raise HttpResponse('Object User does not exist!')
+
+        try:
+            med = AppUser.objects.get(user=user)
+        except AppUser.DoesNotExist:
+            raise HttpResponse('Object Appuser does not exist!')
 
         obj = Exam.objects.all()
 
