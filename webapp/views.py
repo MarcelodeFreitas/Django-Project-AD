@@ -19,11 +19,11 @@ def login_view(request):
         password = form.cleaned_data.get('password')
         user = authenticate(request, username=username, password=password)
         #print(user.is_superuser)
-        if request.user.is_superuser:
+        if user.is_superuser:
             login(request, user)
             return redirect('webapp:home')
         else:
-            if request.user is not None:
+            if user is not None:
                 app_user = AppUser.objects.get(user=user)
                 login(request, user)
                 return redirect('webapp:home')

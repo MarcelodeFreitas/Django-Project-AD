@@ -1,45 +1,50 @@
 {% extends 'webapp/index.html' %}
 {% load crispy_forms_tags %}
+
 {% block content %}
-    <form action="." method="POST"> {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Search">
-    </form>
+    <div class="w3-container">
+        <h1>Search pacient</h1>
+            <form action="." method="POST"> {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" value="Search">
+            </form>
 
-    </br>
-    </br>
+            </br>
+            </br>
 
-    {% if obj %}
-        <table class="w3-table-all">
-            <thead>
-                <h3>Results:</h3>
-                <tr class="w3-light-gray">
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>CC</th>
-                    <th>NIF</th>
-                    <th>Address</th>
-                    <th>Postal Code</th>
-                    <th>Pacient Number</th>
-                    <th>Insurance</th>
-                </tr>
-            </thead>
-        {% for i in obj %}
-            <tr>
-                <td>{{ i.name }}</td>
-                <td>{{ i.email }}</td>
-                <td>{{ i.phone_number }}</td>
-                <td>{{ i.cc }}</td>
-                <td>{{ i.nif }}</td>
-                <td>{{ i.address }}</td>
-                <td>{{ i.cp }}</td>
-                <td>{{ i.pacient_number }}</td>
-                <td>{{ i.insurance }}</td>
-            </tr>
-        {% endfor %}
-        </table>
-        {% else %}
-            <h4>No results found.</h4>
-    {% endif %}
+            {% if obj %}
+                <table class="w3-table-all">
+                    <thead>
+                        <h3>Results:</h3>
+                        <tr class="w3-light-gray">
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>CC</th>
+                            <th>NIF</th>
+                            <th>Address</th>
+                            <th>Postal Code</th>
+                            <th>Pacient Number</th>
+                            <th>Insurance</th>
+                        </tr>
+                    </thead>
+                {% for i in obj %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.email }}</td>
+                        <td>{{ i.phone_number }}</td>
+                        <td>{{ i.cc }}</td>
+                        <td>{{ i.nif }}</td>
+                        <td>{{ i.address }}</td>
+                        <td>{{ i.cp }}</td>
+                        <td>{{ i.pacient_number }}</td>
+                        <td>{{ i.insurance }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+                {% else %}
+                    <h4>No results found.</h4>
+            {% endif %}
+    </div>
+    </div>
 {% endblock %}

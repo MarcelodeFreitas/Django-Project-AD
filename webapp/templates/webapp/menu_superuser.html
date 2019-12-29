@@ -2,13 +2,13 @@
 
     <div class="w3-top">
         <div class="w3-bar w3-teal">
-        <b href="" class="w3-bar-item w3-button w3-left w3-bar-item"><b>Super User Menu</b></a>
+        <a href="" class="w3-bar-item w3-button w3-left w3-bar-item"><b>Super User Menu</b></a>
             <a href="{% url 'webapp:logout' %}" class="w3-bar-item w3-button w3-right">Logout</a>
             <div class="w3-dropdown-hover w3-left">
                 <button class="w3-button">User</button>
                 <div class="w3-dropdown-content w3-bar-block w3-card-4">
                     <a href="{% url 'webapp:add_profile' %}" class="w3-bar-item w3-button">Add</a>
-                    <a href="{% url 'webapp:search_profile' %}" class="w3-bar-item w3-button">Search</a>
+                    <a href="{% url 'webapp:search_user' %}" class="w3-bar-item w3-button">Search</a>
                 </div>
             </div>
             <div class="w3-dropdown-hover w3-left">

@@ -1,34 +1,41 @@
 {% extends 'webapp/index.html' %}
 {% load crispy_forms_tags %}
+
 {% block content %}
-    <form action="." method="POST"> {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Search">
-    </form>
 
-    </br>
-    </br>
+    <div class="w3-container" style="width: 70%; position: center">
+        <h1>Search appointment</h1>
+        <div>
+            <form action="." method="POST"> {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" value="Search">
+            </form>
 
-    {% if obj %}
-        <table class="w3-table-all">
-            <thead>
-                <h3>Results:</h3>
-                <tr class="w3-gray">
-                    <th>Medic</th>
-                    <th>Pacient</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-        {% for i in obj %}
-            <tr>
-                <td>{{ i.medic }}</td>
-                <td>{{ i.pacient }}</td>
-                <td>{{ i.date }}</td>
-            </tr>
-        {% endfor %}
-        </table>
-        {% else %}
-            <h4>No results found.</h4>
-    {% endif %}
+            </br>
+            </br>
+
+            {% if obj %}
+                <table class="w3-table-all">
+                    <thead>
+                        <h3>Results:</h3>
+                        <tr class="w3-gray">
+                            <th>Medic</th>
+                            <th>Pacient</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                {% for i in obj %}
+                    <tr>
+                        <td>{{ i.medic }}</td>
+                        <td>{{ i.pacient }}</td>
+                        <td>{{ i.date }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+                {% else %}
+                    <h4>No results found.</h4>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}

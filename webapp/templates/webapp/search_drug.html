@@ -1,35 +1,40 @@
 {% extends 'webapp/index.html' %}
 {% load crispy_forms_tags %}
+
 {% block content %}
-    <form action="." method="POST"> {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Search">
-    </form>
+    <div class="w3-container">
+        <h1>Search Drug</h1>
+            <form action="." method="POST"> {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" value="Search">
+            </form>
 
-    </br>
-    </br>
+            </br>
+            </br>
 
-    {% if obj %}
-        <table class="w3-table-all">
-            <thead>
-                <h3>Results:</h3>
-                <tr class="w3-light-gray">
-                    <th>Name</th>
-                    <th>DCI</th>
-                    <th>Generic</th>
-                    <th>How to take</th>
-                </tr>
-            </thead>
-        {% for i in obj %}
-            <tr>
-                <td>{{ i.name }}</td>
-                <td>{{ i.dci }}</td>
-                <td>{{ i.generic }}</td>
-                <td>{{ i.how_to_take }}</td>
-            </tr>
-        {% endfor %}
-        </table>
-        {% else %}
-            <h4>No results found.</h4>
-    {% endif %}
+            {% if obj %}
+                <table class="w3-table-all">
+                    <thead>
+                        <h3>Results:</h3>
+                        <tr class="w3-light-gray">
+                            <th>Name</th>
+                            <th>DCI</th>
+                            <th>Generic</th>
+                            <th>How to take</th>
+                        </tr>
+                    </thead>
+                {% for i in obj %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.dci }}</td>
+                        <td>{{ i.generic }}</td>
+                        <td>{{ i.how_to_take }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+                {% else %}
+                    <h4>No results found.</h4>
+            {% endif %}
+    </div>
+    </div>
 {% endblock %}
