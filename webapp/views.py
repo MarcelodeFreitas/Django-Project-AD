@@ -2,11 +2,10 @@ from .forms import *
 from .models import *
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib import messages
 from django.contrib.auth.models import *
-from django.http import HttpResponse
 
 
 def login_view(request):
@@ -75,6 +74,7 @@ def add_profile_view(request):
 
         type = profile_form.cleaned_data.get('type')
 
+
         if type == 'A':
             user = User.objects.get(username=form.cleaned_data.get('username'))
             mygroup, created = Group.objects.get_or_create(name='Admin')
@@ -122,10 +122,14 @@ def add_pacient_view(request):
     if form.is_valid():
         form.save()
         form = PacientForm()
+        messages.success(request, 'Pacient registration succefully')
+    else:
+        messages.error(request, 'Pacient registration unsuccefully')
     context = {
         'form': form,
         'appuser' : appuser
     }
+
     return render(request, "webapp/add_pacient.html", context)
 
 

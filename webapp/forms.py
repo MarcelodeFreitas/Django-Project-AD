@@ -39,7 +39,7 @@ class ExtendedUserCreationForm(UserCreationForm):
             user.save()
         return user
 
-    def clean_email(self):
+    def clean_password(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
 
