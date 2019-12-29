@@ -127,4 +127,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/' #sitio para o qual se é redirecionado após fazer login
+LOGIN_REDIRECT_URL = '/ ' #sitio para o qual se é redirecionado após fazer login

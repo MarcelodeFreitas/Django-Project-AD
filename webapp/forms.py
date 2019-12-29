@@ -3,6 +3,10 @@ from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput()) #esconde a palavra passe do ecrã
+
 class ExtendedUserCreationForm(UserCreationForm):
 
     class Meta:
@@ -35,12 +39,6 @@ class UserProfileForm(forms.ModelForm):
             'cp',
             'type'
         ]
-
-
-'''class AppUserForm(forms.ModelForm):
-    class Meta:
-        model = AppUser
-        fields = '__all__'''
 
 
 class PacientForm(forms.ModelForm):

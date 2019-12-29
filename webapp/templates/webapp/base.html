@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{% static 'webapp/w3.css' %}">
     <title>3 M´s</title>
 </head>
 <body>
+
+    {% block menu %}
+    {% endblock %}
+
+
+
     <div class="w3-display-container w3-card">
+        <br/>
         <img src="{% static 'webapp/images/base.jpg' %}" alt="Lights" style="width:100%"/>
-        <div class="w3-display-topleft w3-card w3-black w3-round-medium w3-padding"><small class="w3-text-white">
+        <div class="w3-display-bottomleft  w3-round-medium w3-padding"><small class="w3-text-black">
             {% if user.is_authenticated %}
                 <p><b>Loged in as:</b> {{ user.username }}</p>
             {% else %}
@@ -19,26 +26,11 @@
     </div>
 
 
-    <div style="width:30%; position:center; float: left" class=" w3-padding">
-        <br/>
-        <div class="w3-container w3-light-blue">
-            <h3><b>Admin Menu</b></h3>
-        </div>
-        <div class="w3-card">
-            <ul class="w3-ul w3-hoverable">
-                <li>{% block nav-add_user %}<a href="{% url 'webapp:add_profile' %}">Add App User</a>{% endblock %}</li>
-                <li>{% block nav-add_pacient %}<a href="{% url 'webapp:add_pacient' %}">Add Pacient</a>{% endblock %}</li>
-                <li>{% block nav-add_drug %}<a href="{% url 'webapp:add_drug' %}">Add Drug</a>{% endblock %}</li>
-                <li>{% block nav-add_exam %}<a href="{% url 'webapp:add_exam' %}">Add Exam</a>{% endblock %}</li>
-                <li>{% block nav-add_presciption %}<a href="{% url 'webapp:add_prescription' %}">Add Prescription</a>{% endblock %}</li>
-                <li>{% block nav-add_appointment %}<a href="{% url 'webapp:add_appointment' %}">Add Appointment</a>{% endblock %}</li>
-            </ul>
-        </div>
-    </div>
+
 
     <div style="width:70%; position:center; float: right" class=" w3-padding">
     {% block content %}
-        Replace me!
+
     {% endblock %}
     </div>
 
