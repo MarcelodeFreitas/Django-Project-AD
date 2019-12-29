@@ -19,6 +19,8 @@
                     <th>Phone Number</th>
                     <th>CC</th>
                     <th>NIF</th>
+                    <th>Address</th>
+                    <th>Postal Code</th>
                     <th>Pacient Number</th>
                     <th>Insurance</th>
                 </tr>
@@ -30,10 +32,14 @@
                 <td>{{ i.phone_number }}</td>
                 <td>{{ i.cc }}</td>
                 <td>{{ i.nif }}</td>
+                <td>{{ i.address }}</td>
+                <td>{{ i.cp }}</td>
                 <td>{{ i.pacient_number }}</td>
                 <td>{{ i.insurance }}</td>
             </tr>
         {% endfor %}
         </table>
+        {% else %}
+            <h4>No results found.</h4>
     {% endif %}
 {% endblock %}

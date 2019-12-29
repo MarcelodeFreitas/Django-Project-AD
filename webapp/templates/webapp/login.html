@@ -1,20 +1,7 @@
 {% extends 'webapp/index.html' %}
 
 {% block content %}
-    {% if form.errors %}
-    <p>Incorrect fields!</p>
-    {% endif %}
 
-    {% if message %}
-    <p>{{message}}</p>
-    {% endif %}
-
-    {% if next %}
-        <p>Can't acess this page!</p>
-    {% endif %}
-
-    <br/>
-    <br/>
     <br/>
     <br/>
     <br/>
@@ -27,10 +14,17 @@
             <p>Username: {{ form.username }}</p>
             <p>Password: {{ form.password }}</p>
 
-
             <input type="submit" value="Login" class="w3-button w3-black w3-round"/>
         </div>
         <!--<input type="hidden" name="next" value="{{ next }}"/>-->
     </form>
     </center>
+
+    <br/>
+    {% if form.errors %}
+        <center>
+            <p>Incorrect username or password! Please, try again.</p>
+        </center>
+
+    {% endif %}
 {% endblock %}
