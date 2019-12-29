@@ -7,6 +7,7 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput()) #esconde a palavra passe do ecrã
 
+
 class ExtendedUserCreationForm(UserCreationForm):
 
     class Meta:
@@ -25,6 +26,7 @@ class ExtendedUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -74,21 +76,21 @@ class PrescriptionForm(forms.ModelForm):
         model = Prescription
         fields = '__all__'
 
+
 class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = '__all__'
 
 
-
 class RawAppUserForm(forms.Form):
     name = forms.CharField(required=False)
     email = forms.EmailField(required=False)
-    phone_number = forms.CharField(required=False)
-    cc = forms.CharField(required=False)
-    nif = forms.CharField(required=False)
+    phone_number = forms.CharField(max_length=9, required=False)
+    cc = forms.CharField(max_length=8, required=False)
+    nif = forms.CharField(max_length=9, required=False)
     address = forms.CharField(required=False)
-    cp = forms.CharField(required=False)
+    cp = forms.CharField(max_length=8, required=False)
 
     TYPES = [
         ('NONE', '-'),
@@ -103,12 +105,12 @@ class RawAppUserForm(forms.Form):
 class RawPacientForm(forms.Form):
     name = forms.CharField(required=False)
     email = forms.EmailField(required=False)
-    phone_number = forms.CharField(required=False)
-    cc = forms.CharField(required=False)
-    nif = forms.CharField(required=False)
+    phone_number = forms.CharField(max_length=9, required=False)
+    cc = forms.CharField(max_length=8, required=False)
+    nif = forms.CharField(max_length=9, required=False)
     address = forms.CharField(required=False)
-    cp = forms.CharField(required=False)
-    pacient_number = forms.CharField(required=False)
+    cp = forms.CharField(max_length=8, required=False)
+    pacient_number = forms.CharField(max_length=9, required=False)
     insurance = forms.CharField(required=False)
 
 
@@ -120,26 +122,18 @@ class RawDrugForm(forms.Form):
     how_to_take = forms.CharField(required=False)
 
 
+class RawAppointmentForm(forms.Form):
+    medic_username = forms.CharField()
+    pacient_number = forms.CharField(max_length=9)
+
+
 class RawPrescriptionForm(forms.Form):
     medic_username = forms.CharField()
     pacient_number = forms.CharField(max_length=9)
-    drug_id = forms.IntegerField()
-    date = forms.DateTimeField()
+    drug_id = forms.IntegerField(required=False)
+
 
 class RawExamForm(forms.Form):
     medic_username = forms.CharField()
-    pacient_number = forms.CharField(max_length=9)
-    exam_type = forms.CharField
-    date = forms.DateTimeField()
-
-
-class RawAppointmentForm(forms.Form):
-    name = forms.CharField(required=False)
-    dci = forms.CharField(required=False)
-    dosage = forms.CharField(required=False)
-    generic = forms.BooleanField(required=False)
-    how_to_take = forms.CharField(required=False)
-
-
-
-
+    pacient_number = forms.CharField(max_length=9, required=False)
+    exam_type = forms.CharField(required=False)

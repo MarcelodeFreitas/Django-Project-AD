@@ -3,12 +3,12 @@
 
 {% block menu %}
     {% if appuser.type == 'A' %}
-        {% include 'webapp/admin_menu.html' %}
+        {% include 'webapp/menu_admin.html' %}
     {% elif appuser.type == 'M' %}
-        {% include 'webapp/medic_menu.html' %}
-    {% elif appuser.type == 'M' %}
-        {% include 'webapp/secretary_menu.html' %}
+        {% include 'webapp/menu_medic.html' %}
+    {% elif appuser.type == 'S' %}
+        {% include 'webapp/menu_secretary.html' %}
     {% elif user.is_superuser %}
-        {% include 'webapp/superuser_menu.html' %}
+        {% include 'webapp/menu_superuser.html' %}
     {% endif %}
 {% endblock %}

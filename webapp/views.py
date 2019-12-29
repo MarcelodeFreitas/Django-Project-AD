@@ -149,25 +149,6 @@ def add_drug_view(request):
 
 
 @login_required
-def add_exam_view(request):
-    appuser = None
-    if request.user.is_superuser:
-        appuser = None
-    elif request.user.is_authenticated:
-        appuser = AppUser.objects.get(user=request.user)
-
-    form = ExamForm(request.POST)
-    if form.is_valid():
-        form.save()
-        form = ExamForm()
-    context = {
-        'form': form,
-        'appuser' : appuser
-    }
-    return render(request, "webapp/add_exam.html", context)
-
-
-@login_required
 def add_prescription_view(request):
     appuser = None
     if request.user.is_superuser:
@@ -184,6 +165,24 @@ def add_prescription_view(request):
         'appuser' : appuser
     }
     return render(request, "webapp/add_prescription.html", context)
+
+@login_required
+def add_exam_view(request):
+    appuser = None
+    if request.user.is_superuser:
+        appuser = None
+    elif request.user.is_authenticated:
+        appuser = AppUser.objects.get(user=request.user)
+
+    form = ExamForm(request.POST)
+    if form.is_valid():
+        form.save()
+        form = ExamForm()
+    context = {
+        'form': form,
+        'appuser' : appuser
+    }
+    return render(request, "webapp/add_exam.html", context)
 
 
 @login_required
@@ -223,7 +222,10 @@ def search_user_view(request):
         phone_number = form.cleaned_data['phone_number']
         cc = form.cleaned_data['cc']
         nif = form.cleaned_data['nif']
+        address = form.cleaned_data['address']
+        cp = form.cleaned_data['cp']
         type = form.cleaned_data['type']
+
         obj = AppUser.objects.all()
 
         if name:
@@ -236,6 +238,10 @@ def search_user_view(request):
             obj = obj.filter(cc=cc)
         if nif:
             obj = obj.filter(nif=nif)
+        if address:
+            obj = obj.filter(address=address)
+        if cp:
+            obj = obj.filter(cp=cp)
         if type=='NONE':
             type = None
         if type:
@@ -267,8 +273,11 @@ def search_pacient_view(request):
         phone_number = form.cleaned_data['phone_number']
         cc = form.cleaned_data['cc']
         nif = form.cleaned_data['nif']
+        address = form.cleaned_data['address']
+        cp = form.cleaned_data['cp']
         pacient_number = form.cleaned_data['pacient_number']
         insurance = form.cleaned_data['insurance']
+
         obj = Pacient.objects.all()
 
         if name:
@@ -281,6 +290,10 @@ def search_pacient_view(request):
             obj = obj.filter(cc=cc)
         if nif:
             obj = obj.filter(nif=nif)
+        if address:
+            obj = obj.filter(address=address)
+        if cp:
+            obj = obj.filter(cp=cp)
         if pacient_number:
             obj = obj.filter(pacient_number=pacient_number)
         if insurance:
@@ -312,6 +325,7 @@ def search_drug_view(request):
         dosage = form.cleaned_data['dosage']
         generic = form.cleaned_data['generic']
         how_to_take = form.cleaned_data['how_to_take']
+
         obj = Drug.objects.all()
 
         if name:
@@ -335,6 +349,42 @@ def search_drug_view(request):
 
 
 @login_required
+def search_appointment_view(request):
+    appuser = None
+    if request.user.is_superuser:
+        appuser = None
+    elif request.user.is_authenticated:
+        appuser = AppUser.objects.get(user=request.user)
+
+    form = RawAppointmentForm(request.POST or None)
+    obj = None
+
+    if form.is_valid():
+        medic_username = form.cleaned_data['medic_username']
+        pacient_number = form.cleaned_data['pacient_number']
+
+        pac = Pacient.objects.get(pacient_number=pacient_number)
+        user = User.objects.get(username=medic_username)
+        med = AppUser.objects.get(user=user)
+
+        obj = Appointment.objects.all()
+
+        if med:
+            obj = obj.filter(medic=med)
+        if pac:
+            obj = obj.filter(pacient=pac)
+
+        form = RawAppointmentForm()
+
+    context = {
+        'form': form,
+        'obj': obj,
+        'appuser': appuser
+    }
+    return render(request, "webapp/search_appointment.html", context)
+
+
+@login_required
 def search_prescription_view(request):
     appuser = None
     if request.user.is_superuser:
@@ -351,11 +401,10 @@ def search_prescription_view(request):
         drug_id = form.cleaned_data['drug_id']
 
         drug = Drug.objects.get(id=drug_id)
-
         pac = Pacient.objects.get(pacient_number=pacient_number)
-
         user = User.objects.get(username=medic_username)
         med = AppUser.objects.get(user=user)
+
         obj = Prescription.objects.all()
 
         if med:
@@ -365,7 +414,7 @@ def search_prescription_view(request):
         if drug:
             obj = obj.filter(drug=drug)
 
-        form = RawDrugForm()
+        form = RawPrescriptionForm()
     context = {
         'form' : form ,
         'obj' : obj,
@@ -391,7 +440,6 @@ def search_exam_view(request):
         exam_type = form.cleaned_data['exam_type']
 
         pac = Pacient.objects.get(pacient_number=pacient_number)
-
         user = User.objects.get(username=medic_username)
         med = AppUser.objects.get(user=user)
 
@@ -411,4 +459,4 @@ def search_exam_view(request):
         'obj': obj,
         'appuser': appuser
     }
-    return render(request, "webapp/search_prescription.html", context)
+    return render(request, "webapp/search_exam.html", context)
