@@ -121,18 +121,17 @@ class RawDrugForm(forms.Form):
 
 
 class RawPrescriptionForm(forms.Form):
-    medic_username = forms.Charfield(required=False)
-    pacient_number = forms.Charfield(required=False)
-    #drug =
-    #aditional_info =
-
+    medic_username = forms.CharField()
+    pacient_number = forms.CharField(max_length=9)
+    drug_id = forms.IntegerField()
+    date = forms.DateTimeField()
 
 class RawExamForm(forms.Form):
-    name = forms.CharField(required=False)
-    dci = forms.CharField(required=False)
-    dosage = forms.CharField(required=False)
-    generic = forms.BooleanField(required=False)
-    how_to_take = forms.CharField(required=False)
+    medic_username = forms.CharField()
+    pacient_number = forms.CharField(max_length=9)
+    exam_type = forms.CharField
+    date = forms.DateTimeField()
+
 
 class RawAppointmentForm(forms.Form):
     name = forms.CharField(required=False)
