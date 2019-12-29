@@ -10,5 +10,7 @@
         {% include 'webapp/menu_secretary.html' %}
     {% elif user.is_superuser %}
         {% include 'webapp/menu_superuser.html' %}
+    {% else %}
+        {% include 'webapp/login_bar.html' %}
     {% endif %}
 {% endblock %}
