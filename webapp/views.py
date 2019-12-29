@@ -222,7 +222,10 @@ def search_user_view(request):
         phone_number = form.cleaned_data['phone_number']
         cc = form.cleaned_data['cc']
         nif = form.cleaned_data['nif']
+        address = form.cleaned_data['address']
+        cp = form.cleaned_data['cp']
         type = form.cleaned_data['type']
+
         obj = AppUser.objects.all()
 
         if name:
@@ -235,6 +238,10 @@ def search_user_view(request):
             obj = obj.filter(cc=cc)
         if nif:
             obj = obj.filter(nif=nif)
+        if address:
+            obj = obj.filter(address=address)
+        if cp:
+            obj = obj.filter(cp=cp)
         if type=='NONE':
             type = None
         if type:
@@ -266,8 +273,11 @@ def search_pacient_view(request):
         phone_number = form.cleaned_data['phone_number']
         cc = form.cleaned_data['cc']
         nif = form.cleaned_data['nif']
+        address = form.cleaned_data['address']
+        cp = form.cleaned_data['cp']
         pacient_number = form.cleaned_data['pacient_number']
         insurance = form.cleaned_data['insurance']
+
         obj = Pacient.objects.all()
 
         if name:
@@ -280,6 +290,10 @@ def search_pacient_view(request):
             obj = obj.filter(cc=cc)
         if nif:
             obj = obj.filter(nif=nif)
+        if address:
+            obj = obj.filter(address=address)
+        if cp:
+            obj = obj.filter(cp=cp)
         if pacient_number:
             obj = obj.filter(pacient_number=pacient_number)
         if insurance:
@@ -311,6 +325,7 @@ def search_drug_view(request):
         dosage = form.cleaned_data['dosage']
         generic = form.cleaned_data['generic']
         how_to_take = form.cleaned_data['how_to_take']
+
         obj = Drug.objects.all()
 
         if name:

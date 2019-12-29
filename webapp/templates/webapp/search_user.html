@@ -1,8 +1,8 @@
 {% extends 'webapp/index.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
     <form action="." method="POST"> {% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <input type="submit" value="Search">
     </form>
 
@@ -12,7 +12,8 @@
     {% if obj %}
         <table class="w3-table-all">
             <thead>
-                <tr class="w3-light-blue">
+                <h3>Results:</h3>
+                <tr class="w3-light-gray">
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
