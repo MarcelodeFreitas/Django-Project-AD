@@ -18,6 +18,7 @@
                     <thead>
                         <h3>Results:</h3>
                         <tr class="w3-light-gray">
+                            <th>Id</th>
                             <th>Name</th>
                             <th>DCI</th>
                             <th>Generic</th>
@@ -26,6 +27,7 @@
                     </thead>
                 {% for i in obj %}
                     <tr>
+                        <td>{{ i.id }}</td>
                         <td>{{ i.name }}</td>
                         <td>{{ i.dci }}</td>
                         <td>{{ i.generic }}</td>

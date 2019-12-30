@@ -100,9 +100,9 @@ def add_profile_view(request):
             mygroup.user_set.add(user)
             mygroup.save()
 
-            form = ExtendedUserCreationForm()
-            profile_form = UserProfileForm()
-            messages.success(request, 'User registration succefully')
+        form = ExtendedUserCreationForm()
+        profile_form = UserProfileForm()
+        messages.success(request, 'User registration succefully')
 
     else:
         messages.error(request, 'User registration unsuccefully')
@@ -180,11 +180,76 @@ def add_appointment_view(request):
         except AppUser.DoesNotExist:
             raise Http404('Object Appuser does not exist!')
 
-    form = AppointmentForm(request.POST)
+    form = AddAppointmentForm(request.POST)
     if form.is_valid():
-        form.save()
-        form = AppointmentForm()
-        messages.success(request, 'Appointment registration succefully')
+        medic_username = form.cleaned_data['medic_username']
+        pacient_number = form.cleaned_data['pacient_number']
+        date_time_start = form.cleaned_data['date_time_start']
+        date_time_finish = form.cleaned_data['date_time_finish']
+        additional_info = form.cleaned_data['aditional_info']
+
+        if medic_username:
+            try:
+                user = User.objects.get(username=medic_username)
+            except User.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
+            try:
+                medic = AppUser.objects.get(user=user, type='M')
+                if medic.type != 'M':
+                    raise Http404('Username does not belong to a Medic!')
+            except AppUser.DoesNotExist:
+                form = AddAppointmentForm()
+                raise Http404('Object Medic does not exist!')
+
+        if pacient_number:
+            try:
+                pac = Pacient.objects.get(pacient_number=pacient_number)
+            except Pacient.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
+
+        a = Appointment(medic=medic, pacient=pac, date_time_start=date_time_start,
+                         date_time_finish = date_time_finish, aditional_info=additional_info)
+
+        appointments_medic = Appointment.objects.filter(medic=medic)
+
+        b = appointments_medic.filter(date_time_start__range=(date_time_start, date_time_finish)).count()
+        print("b:", b)
+        c = appointments_medic.filter(date_time_finish__range=(date_time_start, date_time_finish)).count()
+        print("c:", c)
+        e = appointments_medic.all().filter(date_time_start__lte=date_time_start, date_time_finish__gte=date_time_start)
+        print("e:", e)
+        f = e.filter(date_time_start__lte= date_time_finish, date_time_finish__gte=date_time_finish).count()
+        print("f:", f)
+
+        appointments_pac = Appointment.objects.filter(pacient=pac)
+
+        g = appointments_pac.filter(date_time_start__range=(date_time_start, date_time_finish)).count()
+        print("g:", g)
+        h = appointments_pac.filter(date_time_finish__range=(date_time_start, date_time_finish)).count()
+        print("h:", h)
+        i = appointments_pac.all().filter(date_time_start__lte=date_time_start, date_time_finish__gte=date_time_start)
+        print("i:", i)
+        j = i.filter(date_time_start__lte=date_time_finish, date_time_finish__gte=date_time_finish).count()
+        print("j:", j)
+
+        if b != 0:
+            messages.error(request, 'Medic not available!')
+        elif c != 0:
+            messages.error(request, 'Medic not available!')
+        elif f != 0:
+            messages.error(request, 'Medic not available!')
+        elif g != 0:
+            messages.error(request, 'Pacient not available!')
+        elif h != 0:
+            messages.error(request, 'Pacient not available!')
+        elif j != 0:
+            messages.error(request, 'Pacient not available!')
+        else:
+            a.save()
+            messages.error(request, 'Appointment registration succefully')
+
+        form = AddAppointmentForm()
+
     else:
         messages.error(request, 'Appointment registration unsuccefully')
     context = {
@@ -206,10 +271,43 @@ def add_prescription_view(request):
         except AppUser.DoesNotExist:
             raise Http404('Object Appuser does not exist!')
 
-    form = PrescriptionForm(request.POST)
+    form = AddPrescriptionForm(request.POST)
     if form.is_valid():
-        form.save()
-        form = PrescriptionForm()
+        medic_username = form.cleaned_data['medic_username']
+        pacient_number = form.cleaned_data['pacient_number']
+        drug_id = form.cleaned_data['drug_id']
+        additional_info = form.cleaned_data['aditional_info']
+
+        if medic_username:
+            try:
+                user = User.objects.get(username=medic_username)
+            except User.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
+            try:
+                medic = AppUser.objects.get(user=user, type='M')
+                if medic.type != 'M':
+                    raise Http404('Username does not belong to a Medic!')
+            except AppUser.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
+
+        if pacient_number:
+            try:
+                pac = Pacient.objects.get(pacient_number=pacient_number)
+            except Pacient.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
+
+        if drug_id:
+            try:
+                drug = Drug.objects.get(id= drug_id)
+            except Drug.DoesNotExist:
+                raise Http404('Object Drug does not exist!')
+
+
+        p = Prescription(medic=medic,pacient=pac, drug=drug, aditional_info=additional_info)
+
+        p.save()
+
+        form = AddPrescriptionForm()
         messages.success(request, 'Prescription registration succefully')
     else:
         messages.error(request, 'Prescription registration unsuccefully')
@@ -231,16 +329,44 @@ def add_exam_view(request):
         except AppUser.DoesNotExist:
             raise Http404('Object Appuser does not exist!')
 
-    form = ExamForm(request.POST)
+    form = AddExamForm(request.POST)
     if form.is_valid():
-        form.save()
-        form = ExamForm()
+        medic_username = form.cleaned_data['medic_username']
+        pacient_number = form.cleaned_data['pacient_number']
+        exam_type = form.cleaned_data['exam_type']
+        additional_info = form.cleaned_data['aditional_info']
+
+        if medic_username:
+            try:
+                user = User.objects.get(username=medic_username)
+            except User.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
+            try:
+                medic = AppUser.objects.get(user=user, type='M')
+                if medic.type != 'M':
+                    raise Http404('Username does not belong to a Medic!')
+            except AppUser.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
+
+        if pacient_number:
+            try:
+                pac = Pacient.objects.get(pacient_number=pacient_number)
+            except Pacient.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
+
+
+
+        e = Exam(medic=medic, pacient=pac, exam_type=exam_type, aditional_info=additional_info)
+
+        e.save()
+
+        form = AddExamForm()
         messages.success(request, 'Exam registration succefully')
     else:
         messages.error(request, 'Exam registration unsuccefully')
     context = {
         'form': form,
-        'appuser' : appuser
+        'appuser': appuser
     }
     return render(request, "webapp/add_exam.html", context)
 
@@ -410,33 +536,40 @@ def search_appointment_view(request):
             raise Http404('Object Appuser does not exist!')
 
     form = RawAppointmentForm(request.POST or None)
-    obj = None
+    obj = Appointment.objects.all()
 
     if form.is_valid():
+        med = None
+        pac = None
+
         medic_username = form.cleaned_data['medic_username']
         pacient_number = form.cleaned_data['pacient_number']
+        date_time_search = form.cleaned_data['date_time_search']
 
-        try:
-            pac = Pacient.objects.get(pacient_number=pacient_number)
-        except Pacient.DoesNotExist:
-            raise Http404('Object Pacient does not exist!')
+        if pacient_number:
+            try:
+                pac = Pacient.objects.get(pacient_number=pacient_number)
+            except Pacient.DoesNotExist:
+                raise Http404('Object Pacient does not exist!')
 
-        try:
-            user = User.objects.get(username=medic_username)
-        except User.DoesNotExist:
-            raise Http404('Object User does not exist!')
-
-        try:
-            med = AppUser.objects.get(user=user)
-        except AppUser.DoesNotExist:
-            raise Http404('Object Medic does not exist!')
-
-        obj = Appointment.objects.all()
+        if medic_username:
+            try:
+                user = User.objects.get(username=medic_username)
+            except User.DoesNotExist:
+                raise Http404('Object User does not exist!')
+            try:
+                medic = AppUser.objects.get(user=user, type='M')
+                if medic.type != 'M':
+                    raise Http404('Username does not belong to a Medic!')
+            except AppUser.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
 
         if med:
             obj = obj.filter(medic=med)
         if pac:
             obj = obj.filter(pacient=pac)
+        if date_time_search:
+            obj = obj.filter(date_time_start__gte=date_time_search, date_time_finish__lte=date_time_search)
 
         form = RawAppointmentForm()
 
@@ -463,37 +596,47 @@ def search_prescription_view(request):
     obj = None
 
     if form.is_valid():
+        med = None
+        pac = None
+        drug_id = None
+
         medic_username = form.cleaned_data['medic_username']
         pacient_number = form.cleaned_data['pacient_number']
         drug_id = form.cleaned_data['drug_id']
 
-        try:
-            drug_id = Drug.objects.get(id=drug_id)
-        except Drug.DoesNotExist:
-            raise Http404('Object Drug does not exist!')
+        if drug_id:
+            try:
+                drug = Drug.objects.get(id=drug_id)
+            except Drug.DoesNotExist:
+                raise Http404('Object Drug does not exist!')
 
-        try:
-            pac = Pacient.objects.get(pacient_number=pacient_number)
-        except Pacient.DoesNotExist:
-            raise Http404('Object Pacient does not exist!')
+        if pacient_number:
+            try:
+                pac = Pacient.objects.get(pacient_number=pacient_number)
+            except Pacient.DoesNotExist:
+                raise Http404('Object Pacient does not exist!')
 
-        try:
-            user = User.objects.get(username=medic_username)
-        except User.DoesNotExist:
-            raise Http404('Object User does not exist!')
-        try:
-            med = AppUser.objects.get(user=user)
-        except AppUser.DoesNotExist:
-            raise Http404('Object Medic does not exist!')
+        if medic_username:
+            try:
+                user = User.objects.get(username=medic_username)
+            except User.DoesNotExist:
+                raise Http404('Object User does not exist!')
+            try:
+                medic = AppUser.objects.get(user=user, type='M')
+                if medic.type != 'M':
+                    raise Http404('Username does not belong to a Medic!')
+            except AppUser.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
 
         obj = Prescription.objects.all()
+        print(obj)
 
         if med:
             obj = obj.filter(medic=med)
         if pac:
             obj = obj.filter(pacient=pac)
         if drug_id:
-            obj = obj.filter(drug=drug_id)
+            obj = obj.filter(drug=drug)
 
         form = RawPrescriptionForm()
     context = {
@@ -516,29 +659,35 @@ def search_exam_view(request):
             raise Http404('Object Appuser does not exist!')
 
     form = RawExamForm(request.POST or None)
-    obj = None
+    obj = Exam.objects.all()
 
     if form.is_valid():
+        med = None
+        pac = None
+
         medic_username = form.cleaned_data['medic_username']
         pacient_number = form.cleaned_data['pacient_number']
         exam_type = form.cleaned_data['exam_type']
 
-        try:
-            pac = Pacient.objects.get(pacient_number=pacient_number)
-        except Pacient.DoesNotExist:
-            raise Http404('Object Pacient does not exist!')
+        if pacient_number:
+            try:
+                pac = Pacient.objects.get(pacient_number=pacient_number)
+            except Pacient.DoesNotExist:
+                raise Http404('Object Pacient does not exist!')
 
-        try:
-            user = User.objects.get(username=medic_username)
-        except User.DoesNotExist:
-            raise Http404('Object User does not exist!')
+        if medic_username:
+            try:
+                user = User.objects.get(username=medic_username)
+            except User.DoesNotExist:
+                raise Http404('Object User does not exist!')
+            try:
+                medic = AppUser.objects.get(user=user, type='M')
+                if medic.type != 'M':
+                    raise Http404('Username does not belong to a Medic!')
+            except AppUser.DoesNotExist:
+                raise Http404('Object Medic does not exist!')
 
-        try:
-            med = AppUser.objects.get(user=user)
-        except AppUser.DoesNotExist:
-            raise Http404('Object Appuser does not exist!')
 
-        obj = Exam.objects.all()
 
         if med:
             obj = obj.filter(medic=med)
