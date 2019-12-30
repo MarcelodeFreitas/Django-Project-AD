@@ -717,11 +717,28 @@ def upload_view(request):
 
 @login_required
 def upload_txt_view(request):
+    appuser = None
+    if request.user.is_superuser:
+        appuser = None
+    elif request.user.is_authenticated:
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise Http404('Object Appuser does not exist!')
+
     form = UploadForm(request.POST, request.FILES)
     if form.is_valid():
-        form.save()
-        form = UploadForm()
+        title = form.cleaned_data['title']
+        txt = form.cleaned_data['txt']
+
+        Upload.objects.create(user=request.user, title=title, txt=txt)
+
         messages.success(request, 'File upload succefully')
+
+
+
+
+
     else:
         messages.error(request, 'File upload unsuccefully')
         form = UploadForm()

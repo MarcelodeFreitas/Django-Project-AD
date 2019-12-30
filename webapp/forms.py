@@ -159,7 +159,7 @@ class RawExamForm(forms.Form):
     exam_type = forms.CharField(required=False)
 
 
-class UploadForm(forms.ModelForm):
-    class Meta:
-        model = Upload
-        fields = ('title','appuser','txt')
+class UploadForm(forms.Form):
+    title = forms.CharField(max_length=100, required=False)
+    txt = forms.FileField()
+

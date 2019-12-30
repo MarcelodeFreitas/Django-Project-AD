@@ -87,7 +87,7 @@ class Exam(models.Model):
 
 
 class Upload(models.Model):
-    appuser = models.ForeignKey(AppUser(), on_delete=models.CASCADE)
+    user = models.ForeignKey(User(), on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     txt = models.FileField(upload_to='txt/')
     date = models.DateTimeField(auto_now_add=True)
