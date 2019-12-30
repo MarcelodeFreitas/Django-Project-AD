@@ -8,7 +8,8 @@
                 <button class="w3-button">User</button>
                 <div class="w3-dropdown-content w3-bar-block w3-card-4">
                     <a href="{% url 'webapp:add_profile' %}" class="w3-bar-item w3-button">Add</a>
-                    <a href="{% url 'webapp:search_user' %}" class="w3-bar-item w3-button">Search</a>
+                    <a href="{% url 'webapp:search_user' %}" class="w3-bar-item w3-button">Search
+                    <a href="{% url 'webapp:upload_txt' %}" class="w3-bar-item w3-button">Upload users from txt</a>
                 </div>
             </div>
             <div class="w3-dropdown-hover w3-left">
@@ -16,6 +17,7 @@
                 <div class="w3-dropdown-content w3-bar-block w3-card-4">
                     <a href="{% url 'webapp:add_pacient' %}" class="w3-bar-item w3-button">Add</a>
                     <a href="{% url 'webapp:search_pacient' %}" class="w3-bar-item w3-button">Search</a>
+                    <a href="{% url 'webapp:upload_txt' %}" class="w3-bar-item w3-button">Upload pacients from txt</a>
                 </div>
             </div>
             <div class="w3-dropdown-hover w3-left">
@@ -23,6 +25,7 @@
                 <div class="w3-dropdown-content w3-bar-block w3-card-4">
                     <a href="{% url 'webapp:add_drug' %}" class="w3-bar-item w3-button">Add</a>
                     <a href="{% url 'webapp:search_drug' %}" class="w3-bar-item w3-button">Search</a>
+                    <a href="{% url 'webapp:upload_txt' %}" class="w3-bar-item w3-button">Upload drugs from txt</a>
                 </div>
             </div>
             <div class="w3-dropdown-hover w3-left">
