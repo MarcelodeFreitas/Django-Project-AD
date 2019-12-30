@@ -139,8 +139,10 @@ class RawDrugForm(forms.Form):
 
 
 class RawAppointmentForm(forms.Form):
-    medic_username = forms.CharField()
-    pacient_number = forms.CharField(max_length=9)
+    medic_username = forms.CharField(required=False)
+    pacient_number = forms.CharField(max_length=9, required=False)
+    date_time_search = forms.DateTimeField(required=False,
+                                           widget=forms.DateTimeInput(attrs={"placeholder" : 'AAAA-MM-DD HH:MM'}))
 
 
 class RawPrescriptionForm(forms.Form):

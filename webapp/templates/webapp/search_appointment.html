@@ -21,14 +21,16 @@
                         <tr class="w3-light-gray">
                             <th>Medic</th>
                             <th>Pacient</th>
-                            <th>Date</th>
+                            <th>DateTime Start</th>
+                            <th>DateTime Start</th>
                         </tr>
                     </thead>
                 {% for i in obj %}
                     <tr>
                         <td>{{ i.medic }}</td>
                         <td>{{ i.pacient }}</td>
-                        <td>{{ i.date }}</td>
+                        <td>{{ i.date_time_start }}</td>
+                        <td>{{ i.date_time_finish }}</td>
                     </tr>
                 {% endfor %}
                 </table>
