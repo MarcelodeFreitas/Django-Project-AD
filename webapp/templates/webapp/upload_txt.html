@@ -3,6 +3,20 @@
 
 {% block content %}
   <h2>Upload txt</h2>
+
+    {% if messages %}
+    <ul class="w3-card w3-sand">
+        {% for message in messages %}
+            <br/>
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}{% endif %}
+            {{ message }}
+        </li>
+        {% endfor %}
+    <br/>
+    </ul>
+    {% endif %}
+
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}

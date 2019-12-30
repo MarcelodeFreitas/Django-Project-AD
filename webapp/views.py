@@ -703,7 +703,7 @@ def search_exam_view(request):
     }
     return render(request, "webapp/search_exam.html", context)
 
-
+@login_required
 def upload_view(request):
     context = {}
     if request.method == 'POST':
@@ -715,15 +715,18 @@ def upload_view(request):
     return render(request, 'webapp/upload.html', context)
 
 
+@login_required
 def upload_txt_view(request):
-    if request.method == 'POST':
-        form = UploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('sucesso')
-    else:
+    form = UploadForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
         form = UploadForm()
-    return render(request, 'webapp/upload_txt.html', {
-        'form': form
-    })
+        messages.success(request, 'File upload succefully')
+    else:
+        messages.error(request, 'File upload unsuccefully')
+        form = UploadForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'webapp/upload_txt.html', context)
 
