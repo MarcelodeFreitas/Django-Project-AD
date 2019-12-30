@@ -140,12 +140,18 @@ class RawAppointmentForm(forms.Form):
 
 
 class RawPrescriptionForm(forms.Form):
-    medic_username = forms.CharField()
-    pacient_number = forms.CharField(max_length=9)
-    drug_id = forms.IntegerField()
+    medic_username = forms.CharField(required=False)
+    pacient_number = forms.CharField(max_length=9, required=False)
+    drug_id = forms.IntegerField(required=False)
 
 
 class RawExamForm(forms.Form):
     medic_username = forms.CharField()
     pacient_number = forms.CharField(max_length=9, required=False)
     exam_type = forms.CharField(required=False)
+
+
+class UploadForm(forms.ModelForm):
+    class Meta:
+        model = Upload
+        fields = ('title','appuser','txt')

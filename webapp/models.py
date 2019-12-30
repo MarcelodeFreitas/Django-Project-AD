@@ -86,4 +86,11 @@ class Exam(models.Model):
         return str((str(self.medic), str(self.pacient), str(self.exam_type), str(self.exam_result)))
 
 
+class Upload(models.Model):
+    appuser = models.ForeignKey(AppUser(), on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    txt = models.FileField(upload_to='txt/')
+    date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.title

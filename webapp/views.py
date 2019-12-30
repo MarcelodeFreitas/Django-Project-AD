@@ -1,12 +1,12 @@
 from .forms import *
 from .models import *
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import *
 from django.http import *
+from django.core.files.storage import FileSystemStorage
 
 
 def login_view(request):
@@ -555,3 +555,29 @@ def search_exam_view(request):
         'appuser': appuser
     }
     return render(request, "webapp/search_exam.html", context)
+
+
+def upload_view(request):
+    context = {}
+    if request.method == 'POST':
+        uploaded_file = request.FILES['document']
+        fs = FileSystemStorage()
+        name = fs.save(uploaded_file.name, uploaded_file)
+        url = fs.url(name)
+        context['url'] = fs.url(name)
+    return render(request, 'webapp/upload.html', context)
+
+
+def upload_txt_view(request):
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponse('sucesso')
+    else:
+        form = UploadForm()
+    return render(request, 'webapp/upload_txt.html', {
+        'form': form
+    })
+
+

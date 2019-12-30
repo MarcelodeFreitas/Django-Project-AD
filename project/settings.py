@@ -128,6 +128,13 @@ USE_TZ = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+LOGIN_REDIRECT_URL = '/ ' #sitio para o qual se é redirecionado após fazer login
+
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/ ' #sitio para o qual se é redirecionado após fazer login
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'webapp/static')
+                    ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
