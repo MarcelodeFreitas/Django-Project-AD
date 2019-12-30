@@ -42,11 +42,11 @@ class Pacient(models.Model):
 
 
 class Drug(models.Model):
-    name = models.CharField("Name",max_length=50)
-    dci = models.CharField("DCI", max_length=50)
-    dosage = models.CharField("Dosage",max_length=10)
+    name = models.CharField("Name",max_length=500)
+    dci = models.CharField("DCI", max_length=500)
+    dosage = models.CharField("Dosage",max_length=500)
     generic = models.BooleanField(verbose_name="Generic")
-    how_to_take = models.CharField("How to take", max_length=250)
+    how_to_take = models.CharField("How to take", max_length=500)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -54,7 +54,7 @@ class Drug(models.Model):
 
 
 class Appointment(models.Model):
-    medic = models.ForeignKey(AppUser(type='M'), verbose_name="Medic", on_delete=models.PROTECT)  # CASCADE vai eliminar a prescrição se o médico for eliminado, PROTECT não vai permitir eliminar médicos que tenham passado prescrições
+    medic = models.ForeignKey(AppUser(type='M'), verbose_name="Medic", on_delete=models.PROTECT)
     pacient = models.ForeignKey(Pacient(), verbose_name="Pacient", on_delete=models.PROTECT)
     aditional_info = models.TextField("Notes", max_length=500, blank=True)
     date_time_start = models.DateTimeField(null=False, blank=False)
@@ -65,7 +65,7 @@ class Appointment(models.Model):
 
 
 class Prescription(models.Model):
-    medic = models.ForeignKey(AppUser(type='M'),verbose_name="Medic", on_delete=models.PROTECT) #CASCADE vai eliminar a prescrição se o médico for eliminado, PROTECT não vai permitir eliminar médicos que tenham passado prescrições
+    medic = models.ForeignKey(AppUser(type='M'),verbose_name="Medic", on_delete=models.PROTECT)
     pacient = models.ForeignKey(Pacient(),verbose_name="Pacient", on_delete=models.PROTECT)
     drug = models.ForeignKey(Drug(),verbose_name="Drug", on_delete=models.PROTECT)
     aditional_info = models.TextField("Notes", max_length=500, blank=True)
@@ -76,7 +76,7 @@ class Prescription(models.Model):
 
 
 class Exam(models.Model):
-    medic = models.ForeignKey(AppUser(type='M'), verbose_name="Medic",on_delete=models.PROTECT)  # CASCADE vai eliminar a prescrição se o médico for eliminado, PROTECT não vai permitir eliminar médicos que tenham passado prescrições
+    medic = models.ForeignKey(AppUser(type='M'), verbose_name="Medic",on_delete=models.PROTECT)
     pacient = models.ForeignKey(Pacient(), verbose_name="Pacient", on_delete=models.PROTECT)
     exam_type = models.CharField("Type of exam", max_length=30)
     aditional_info = models.TextField("Notes", max_length=500, blank=True)

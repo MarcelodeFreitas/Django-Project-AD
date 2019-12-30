@@ -19,7 +19,9 @@ urlpatterns = [
     path('search_appointment/', views.search_appointment_view, name='search_appointment'),
     path('search_prescription/', views.search_prescription_view, name='search_prescription'),
     path('search_exam/', views.search_exam_view, name='search_exam'),
-    path('upload_users/', views.upload_users_view, name='upload_users')
+    path('upload_users/', views.upload_users_view, name='upload_users'),
+    path('upload_pacients/', views.upload_pacients_view, name='upload_pacients'),
+    path('upload_drugs/', views.upload_drugs_view, name='upload_drugs'),
 ]
 
 

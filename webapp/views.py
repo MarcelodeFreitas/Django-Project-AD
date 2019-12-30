@@ -806,3 +806,122 @@ def upload_users_view(request):
     }
     return render(request, 'webapp/upload_users.html', context)
 
+
+@login_required
+def upload_pacients_view(request):
+    appuser = None
+    if request.user.is_superuser:
+        appuser = None
+    elif request.user.is_authenticated:
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise Http404('Object Appuser does not exist!')
+
+    form = UploadForm(request.POST, request.FILES)
+    if form.is_valid():
+        title = form.cleaned_data['title']
+        txt = form.cleaned_data['txt']
+
+        Upload.objects.create(user=request.user, title=title, txt=txt)
+
+        print("txt", txt)
+        print("txt.open()",txt.open())
+
+        read = txt.read()
+        print(read)
+
+        decoded = read.decode()
+        print(decoded)
+
+        line = decoded.split("\r\n")
+
+        print("line", line)
+
+        i = 0
+        while i < len(line):
+            arg_list = line[i].split(":")
+            name = arg_list[0]
+            email = arg_list[1]
+            phone_number = arg_list[2]
+            cc = arg_list[3]
+            nif = arg_list[4]
+            address = arg_list[5]
+            pc = arg_list[6]
+            pacient_number = arg_list[7]
+            insurance = arg_list[8]
+
+            print("name", name)
+            print("email", email)
+            print("phone", phone_number)
+            print("cc", cc)
+            print("nif", nif)
+            print("address", address)
+            print("pc", pc)
+            print("pacient_number", pacient_number)
+            print("insurance", insurance)
+            i += 1
+
+            Pacient.objects.create(name=name, email=email, phone_number=phone_number,
+                                   cc=cc, nif=nif, address=address, cp=pc, pacient_number=pacient_number,
+                                   insurance=insurance)
+
+        messages.success(request, 'File upload succesfull! Pacients added!')
+
+    else:
+        messages.error(request, 'File upload unsuccefully! Pacients not added!')
+        form = UploadForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'webapp/upload_pacients.html', context)
+
+@login_required
+def upload_drugs_view(request):
+    appuser = None
+    if request.user.is_superuser:
+        appuser = None
+    elif request.user.is_authenticated:
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise Http404('Object Appuser does not exist!')
+
+    form = UploadForm(request.POST, request.FILES)
+    if form.is_valid():
+        title = form.cleaned_data['title']
+        txt = form.cleaned_data['txt']
+
+        Upload.objects.create(user=request.user, title=title, txt=txt)
+
+
+        txt.open()
+
+        read = txt.read()
+
+        decoded = read.decode()
+
+        line = decoded.split("\r\n")
+
+        i = 0
+        while i < len(line):
+            arg_list = line[i].split(";")
+            name = arg_list[0]
+            dci = arg_list[1]
+            dosage = arg_list[2]
+            generic = arg_list[3]
+            how_to_take = arg_list[4]
+            i += 1
+
+            Drug.objects.create(name=name, dci=dci, dosage=dosage, generic=generic, how_to_take=how_to_take)
+
+        messages.success(request, 'File upload succesfull! Drugs added!')
+
+    else:
+        messages.error(request, 'File upload unsuccefully! Drugs not added!')
+        form = UploadForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'webapp/upload_drugs.html', context)
+
