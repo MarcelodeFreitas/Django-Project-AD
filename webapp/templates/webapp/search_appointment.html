@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <div class="w3-container" style="width: 70%; position: center">
+    <div class="container">
         <h1>Search appointment</h1>
         <div>
             <form action="." method="POST"> {% csrf_token %}
@@ -18,7 +18,7 @@
                 <table class="w3-table-all">
                     <thead>
                         <h3>Results:</h3>
-                        <tr class="w3-gray">
+                        <tr class="w3-light-gray">
                             <th>Medic</th>
                             <th>Pacient</th>
                             <th>Date</th>

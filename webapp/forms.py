@@ -39,14 +39,6 @@ class ExtendedUserCreationForm(UserCreationForm):
             user.save()
         return user
 
-    def clean_password(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
-
-        if password1 != password2:
-            raise forms.ValidationError("Passwords must match")
-        return password1
-
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -150,7 +142,7 @@ class RawAppointmentForm(forms.Form):
 class RawPrescriptionForm(forms.Form):
     medic_username = forms.CharField()
     pacient_number = forms.CharField(max_length=9)
-    drug_id = forms.IntegerField(required=False)
+    drug_id = forms.IntegerField()
 
 
 class RawExamForm(forms.Form):

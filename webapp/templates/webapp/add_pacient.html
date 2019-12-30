@@ -6,13 +6,15 @@
         <h1>Add a pacient</h1>
 
             {% if messages %}
-    <ul class="messages">
+    <ul class="w3-card w3-sand">
         {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            <br/>
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}{% endif %}
             {{ message }}
         </li>
         {% endfor %}
+    <br/>
     </ul>
     {% endif %}
 
