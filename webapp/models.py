@@ -13,7 +13,7 @@ class Profile(models.Model):
     date = models.DateTimeField(auto_now_add=True) #guarda automaticamente a data a que foi criado
 
     def __str__(self):
-        return str((str(self.name), str(self.type)))
+        return str((str(self.name)))
 
 
 class AppUser(Profile):
@@ -88,7 +88,7 @@ class Exam(models.Model):
 
 class Upload(models.Model):
     user = models.ForeignKey(User(), on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, blank=True)
     txt = models.FileField(upload_to='txt/')
     date = models.DateTimeField(auto_now_add=True)
 

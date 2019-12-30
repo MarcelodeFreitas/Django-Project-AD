@@ -1,3 +1,8 @@
+import os
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 from .forms import *
 from .models import *
 from django.shortcuts import render, redirect
@@ -703,20 +708,9 @@ def search_exam_view(request):
     }
     return render(request, "webapp/search_exam.html", context)
 
-@login_required
-def upload_view(request):
-    context = {}
-    if request.method == 'POST':
-        uploaded_file = request.FILES['document']
-        fs = FileSystemStorage()
-        name = fs.save(uploaded_file.name, uploaded_file)
-        url = fs.url(name)
-        context['url'] = fs.url(name)
-    return render(request, 'webapp/upload.html', context)
-
 
 @login_required
-def upload_txt_view(request):
+def upload_users_view(request):
     appuser = None
     if request.user.is_superuser:
         appuser = None
@@ -733,17 +727,82 @@ def upload_txt_view(request):
 
         Upload.objects.create(user=request.user, title=title, txt=txt)
 
-        messages.success(request, 'File upload succefully')
 
 
+        print("txt", txt)
+        print("txt.open()",txt.open())
 
 
+        read = txt.read()
+        print(read)
+
+        decoded = read.decode()
+        print(decoded)
+
+        line = decoded.split("\r\n")
+
+        print("line", line)
+
+        i = 0
+        while i < len(line):
+            arg_list = line[i].split(":")
+            username = arg_list[0]
+            password1 = arg_list[1]
+            password2 = arg_list[2]
+            name = arg_list[3]
+            email = arg_list[4]
+            phone_number = arg_list[5]
+            cc = arg_list[6]
+            nif = arg_list[7]
+            address = arg_list[8]
+            pc = arg_list[9]
+            type = arg_list[10]
+            print("username", username)
+            print("password1", password1)
+            print("password2", password2)
+            print("name", name)
+            print("email", email)
+            print("phone", phone_number)
+            print("cc", cc)
+            print("nif", nif)
+            print("address", address)
+            print("pc", pc)
+            print("type", type)
+            i += 1
+
+            user = User.objects.create(username=username, password=password1)
+            print("USER: ", user)
+
+            profile = AppUser.objects.create(user=user, name=name, email=email, phone_number=phone_number,
+                                             cc=cc, nif=nif, address=address, cp=pc, type=type)
+
+            print("PROFILE: ", profile)
+
+            if type == 'A':
+                user = User.objects.get(username=username)
+                mygroup, created = Group.objects.get_or_create(name='Admin')
+                mygroup.user_set.add(user)
+                mygroup.save()
+
+            if type == 'M':
+                user = User.objects.get(username=username)
+                mygroup, created = Group.objects.get_or_create(name='Medic')
+                mygroup.user_set.add(user)
+                mygroup.save()
+
+            if type == 'S':
+                user = User.objects.get(username=username)
+                mygroup, created = Group.objects.get_or_create(name='Secretary')
+                mygroup.user_set.add(user)
+                mygroup.save()
+
+        messages.success(request, 'File upload succesfull! Users added!')
 
     else:
-        messages.error(request, 'File upload unsuccefully')
+        messages.error(request, 'File upload unsuccefully! Users not added!')
         form = UploadForm()
     context = {
         'form': form,
     }
-    return render(request, 'webapp/upload_txt.html', context)
+    return render(request, 'webapp/upload_users.html', context)
 
