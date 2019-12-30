@@ -3,7 +3,7 @@ from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
-from datetime import datetime
+
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -20,6 +20,7 @@ class LoginForm(forms.Form):
             if not user.check_password(password):
                 raise forms.ValidationError('Incorrect username or password!')
         return super(LoginForm, self).clean(*args, **kwargs)
+
 
 class ExtendedUserCreationForm(UserCreationForm):
 
@@ -84,6 +85,7 @@ class AddAppointmentForm(forms.Form):
     date_time_start = forms.DateTimeField(widget=forms.DateTimeInput(attrs={"placeholder" : 'AAAA-MM-DD HH:MM'}))
     date_time_finish = forms.DateTimeField(widget=forms.DateTimeInput(attrs={"placeholder": 'AAAA-MM-DD HH:MM'}))
     aditional_info = forms.CharField(max_length=500, widget=forms.Textarea, required=False)
+
 
 class AddPrescriptionForm(forms.Form):
     medic_username = forms.CharField()

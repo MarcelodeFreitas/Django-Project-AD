@@ -86,7 +86,6 @@ class Exam(models.Model):
         return str((str(self.medic), str(self.pacient), str(self.exam_type)))
 
 
-
 class Upload(models.Model):
     appuser = models.ForeignKey(AppUser(), on_delete=models.CASCADE)
     title = models.CharField(max_length=100)

@@ -35,6 +35,7 @@ def login_view(request):
     }
     return render(request, "webapp/login.html", context)
 
+
 def logout_view(request):
     logout(request)
     return redirect('webapp:login')
@@ -257,7 +258,6 @@ def add_appointment_view(request):
         'appuser' : appuser
     }
     return render(request, "webapp/add_appointment.html", context)
-
 
 
 @login_required
@@ -687,8 +687,6 @@ def search_exam_view(request):
             except AppUser.DoesNotExist:
                 raise Http404('Object Medic does not exist!')
 
-
-
         if med:
             obj = obj.filter(medic=med)
         if pac:
@@ -728,5 +726,4 @@ def upload_txt_view(request):
     return render(request, 'webapp/upload_txt.html', {
         'form': form
     })
-
 
