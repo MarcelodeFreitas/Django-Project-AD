@@ -4,7 +4,7 @@
 {% block content %}
 
     <div class="container">
-        <h1>Search pacient</h1>
+        <h1>Search Pacient</h1>
             <form action="." method="POST"> {% csrf_token %}
                 {{ form|crispy }}
                 <input type="submit" value="Search">

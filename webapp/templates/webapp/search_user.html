@@ -18,6 +18,7 @@
                     <thead>
                         <h3>Results:</h3>
                         <tr class="w3-light-gray">
+                            <th>Username</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone Number</th>
@@ -30,6 +31,7 @@
                     </thead>
                 {% for i in obj %}
                     <tr>
+                        <td>{{ i.user.username }}</td>
                         <td>{{ i.name }}</td>
                         <td>{{ i.email }}</td>
                         <td>{{ i.phone_number }}</td>

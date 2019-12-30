@@ -61,7 +61,7 @@ class Appointment(models.Model):
     date_time_finish = models.DateTimeField(null=False, blank=False)
 
     def __str__(self):
-        return str((str(self.medic), str(self.pacient)))
+        return str((str(self.medic), str(self.pacient), str(self.date_time_start), str(self.date_time_finish)))
 
 
 class Prescription(models.Model):
@@ -79,12 +79,11 @@ class Exam(models.Model):
     medic = models.ForeignKey(AppUser(type='M'), verbose_name="Medic",on_delete=models.PROTECT)  # CASCADE vai eliminar a prescrição se o médico for eliminado, PROTECT não vai permitir eliminar médicos que tenham passado prescrições
     pacient = models.ForeignKey(Pacient(), verbose_name="Pacient", on_delete=models.PROTECT)
     exam_type = models.CharField("Type of exam", max_length=30)
-    exam_result = models.URLField(verbose_name="Result of exam", blank=True) #será um link para download de um ficheiro
     aditional_info = models.TextField("Notes", max_length=500, blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str((str(self.medic), str(self.pacient), str(self.exam_type), str(self.exam_result)))
+        return str((str(self.medic), str(self.pacient), str(self.exam_type)))
 
 
 

@@ -3,6 +3,7 @@ from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
+from datetime import datetime
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -77,22 +78,25 @@ class DrugForm(forms.ModelForm):
         fields = '__all__'
 
 
-class ExamForm(forms.ModelForm):
-    class Meta:
-        model = Exam
-        fields = '__all__'
+class AddAppointmentForm(forms.Form):
+    medic_username = forms.CharField()
+    pacient_number = forms.CharField(max_length=9)
+    date_time_start = forms.DateTimeField(widget=forms.DateTimeInput(attrs={"placeholder" : 'AAAA-MM-DD HH:MM'}))
+    date_time_finish = forms.DateTimeField(widget=forms.DateTimeInput(attrs={"placeholder": 'AAAA-MM-DD HH:MM'}))
+    aditional_info = forms.CharField(max_length=500, widget=forms.Textarea, required=False)
+
+class AddPrescriptionForm(forms.Form):
+    medic_username = forms.CharField()
+    pacient_number = forms.CharField(max_length=9)
+    drug_id = forms.IntegerField()
+    aditional_info = forms.CharField(max_length=500, widget=forms.Textarea, required=False)
 
 
-class PrescriptionForm(forms.ModelForm):
-    class Meta:
-        model = Prescription
-        fields = '__all__'
-
-
-class AppointmentForm(forms.ModelForm):
-    class Meta:
-        model = Appointment
-        fields = '__all__'
+class AddExamForm(forms.Form):
+    medic_username = forms.CharField()
+    pacient_number = forms.CharField(max_length=9)
+    exam_type = forms.CharField(max_length=30)
+    aditional_info = forms.CharField(max_length=500, widget=forms.Textarea, required=False)
 
 
 class RawAppUserForm(forms.Form):
@@ -140,12 +144,12 @@ class RawAppointmentForm(forms.Form):
 
 
 class RawPrescriptionForm(forms.Form):
-    medic_username = forms.CharField()
-    pacient_number = forms.CharField(max_length=9)
-    drug_id = forms.IntegerField()
+    medic_username = forms.CharField(required=False)
+    pacient_number = forms.CharField(max_length=9, required=False)
+    drug_id = forms.IntegerField(required=False)
 
 
 class RawExamForm(forms.Form):
-    medic_username = forms.CharField()
+    medic_username = forms.CharField(required=False)
     pacient_number = forms.CharField(max_length=9, required=False)
     exam_type = forms.CharField(required=False)
