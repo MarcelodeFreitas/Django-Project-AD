@@ -50,7 +50,7 @@ class Drug(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str((str(self.name), str(self.dci), str(self.dosage), str(self.generic), str(self.how_to_take), str(self.date)))
+        return str((str(self.id), str(self.name), str(self.dci), str(self.dosage), str(self.generic), str(self.how_to_take)))
 
 
 class Appointment(models.Model):
@@ -61,7 +61,7 @@ class Appointment(models.Model):
     date_time_finish = models.DateTimeField(null=False, blank=False)
 
     def __str__(self):
-        return str((str(self.medic), str(self.pacient), str(self.date)))
+        return str((str(self.medic), str(self.pacient)))
 
 
 class Prescription(models.Model):
@@ -72,7 +72,7 @@ class Prescription(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str((str(self.medic), str(self.pacient), str(self.drug), str(self.date)))
+        return str((str(self.medic), str(self.pacient), str(self.drug)))
 
 
 class Exam(models.Model):
@@ -84,7 +84,7 @@ class Exam(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str((str(self.medic), str(self.pacient), str(self.exam_type), str(self.exam_result), str(self.date)))
+        return str((str(self.medic), str(self.pacient), str(self.exam_type), str(self.exam_result)))
 
 
 

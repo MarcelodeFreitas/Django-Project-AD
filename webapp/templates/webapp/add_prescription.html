@@ -4,6 +4,20 @@
 
     <div class="container">
         <h1>Add Prescription</h1>
+
+        {% if messages %}
+    <ul class="w3-card w3-sand">
+        {% for message in messages %}
+            <br/>
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}{% endif %}
+            {{ message }}
+        </li>
+        {% endfor %}
+    <br/>
+    </ul>
+    {% endif %}
+
         <div>
            <form method="post">
             {% csrf_token %}

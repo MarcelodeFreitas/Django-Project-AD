@@ -48,11 +48,12 @@ def home_view(request):
             try:
                 appuser = AppUser.objects.get(user=request.user)
             except AppUser.DoesNotExist:
-                raise HttpResponse('Object Appuser does not exist!')
+                raise Http404('Object Appuser does not exist!')
             context = {
                 'appuser' : appuser
             }
     return render(request, "webapp/index.html", context)
+
 
 @login_required
 def add_profile_view(request):
@@ -65,7 +66,7 @@ def add_profile_view(request):
         try:
             appuser = AppUser.objects.get(user=request.user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
     form = ExtendedUserCreationForm(request.POST or None)
     profile_form = UserProfileForm(request.POST or None)
@@ -80,7 +81,6 @@ def add_profile_view(request):
         profile.save()
 
         type = profile_form.cleaned_data.get('type')
-
 
         if type == 'A':
             user = User.objects.get(username=form.cleaned_data.get('username'))
@@ -100,11 +100,12 @@ def add_profile_view(request):
             mygroup.user_set.add(user)
             mygroup.save()
 
-        return redirect('webapp:home')
+            form = ExtendedUserCreationForm()
+            profile_form = UserProfileForm()
+            messages.success(request, 'User registration succefully')
 
     else:
-        print("Invalid field, please try again!")
-
+        messages.error(request, 'User registration unsuccefully')
         form = ExtendedUserCreationForm()
         profile_form = UserProfileForm()
 
@@ -126,7 +127,7 @@ def add_pacient_view(request):
         try:
             appuser = AppUser.objects.get(user=request.user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
     form = PacientForm(request.POST)
     if form.is_valid():
@@ -152,60 +153,20 @@ def add_drug_view(request):
         try:
             appuser = AppUser.objects.get(user=request.user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
     form = DrugForm(request.POST)
     if form.is_valid():
         form.save()
         form = DrugForm()
+        messages.success(request, 'Drug registration succefully')
+    else:
+        messages.error(request, 'Drug registration unsuccefully')
     context = {
         'form': form,
         'appuser' : appuser
     }
     return render(request, "webapp/add_drug.html", context)
-
-
-@login_required
-def add_prescription_view(request):
-    appuser = None
-    if request.user.is_superuser:
-        appuser = None
-    elif request.user.is_authenticated:
-        try:
-            appuser = AppUser.objects.get(user=request.user)
-        except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
-
-    form = PrescriptionForm(request.POST)
-    if form.is_valid():
-        form.save()
-        form = PrescriptionForm()
-    context = {
-        'form': form,
-        'appuser' : appuser
-    }
-    return render(request, "webapp/add_prescription.html", context)
-
-@login_required
-def add_exam_view(request):
-    appuser = None
-    if request.user.is_superuser:
-        appuser = None
-    elif request.user.is_authenticated:
-        try:
-            appuser = AppUser.objects.get(user=request.user)
-        except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
-
-    form = ExamForm(request.POST)
-    if form.is_valid():
-        form.save()
-        form = ExamForm()
-    context = {
-        'form': form,
-        'appuser' : appuser
-    }
-    return render(request, "webapp/add_exam.html", context)
 
 
 @login_required
@@ -217,17 +178,71 @@ def add_appointment_view(request):
         try:
             appuser = AppUser.objects.get(user=request.user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
     form = AppointmentForm(request.POST)
     if form.is_valid():
         form.save()
         form = AppointmentForm()
+        messages.success(request, 'Appointment registration succefully')
+    else:
+        messages.error(request, 'Appointment registration unsuccefully')
     context = {
         'form': form,
         'appuser' : appuser
     }
     return render(request, "webapp/add_appointment.html", context)
+
+
+
+@login_required
+def add_prescription_view(request):
+    appuser = None
+    if request.user.is_superuser:
+        appuser = None
+    elif request.user.is_authenticated:
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise Http404('Object Appuser does not exist!')
+
+    form = PrescriptionForm(request.POST)
+    if form.is_valid():
+        form.save()
+        form = PrescriptionForm()
+        messages.success(request, 'Prescription registration succefully')
+    else:
+        messages.error(request, 'Prescription registration unsuccefully')
+    context = {
+        'form': form,
+        'appuser' : appuser
+    }
+    return render(request, "webapp/add_prescription.html", context)
+
+
+@login_required
+def add_exam_view(request):
+    appuser = None
+    if request.user.is_superuser:
+        appuser = None
+    elif request.user.is_authenticated:
+        try:
+            appuser = AppUser.objects.get(user=request.user)
+        except AppUser.DoesNotExist:
+            raise Http404('Object Appuser does not exist!')
+
+    form = ExamForm(request.POST)
+    if form.is_valid():
+        form.save()
+        form = ExamForm()
+        messages.success(request, 'Exam registration succefully')
+    else:
+        messages.error(request, 'Exam registration unsuccefully')
+    context = {
+        'form': form,
+        'appuser' : appuser
+    }
+    return render(request, "webapp/add_exam.html", context)
 
 
 @login_required
@@ -240,7 +255,7 @@ def search_user_view(request):
         try:
             appuser = AppUser.objects.get(user=request.user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
     form = RawAppUserForm(request.POST)
     obj = None
@@ -294,7 +309,7 @@ def search_pacient_view(request):
         try:
             appuser = AppUser.objects.get(user=request.user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
     form = RawPacientForm(request.POST)
     obj = None
@@ -349,7 +364,7 @@ def search_drug_view(request):
         try:
             appuser = AppUser.objects.get(user=request.user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
     form = RawDrugForm(request.POST)
     obj = None
@@ -392,7 +407,7 @@ def search_appointment_view(request):
         try:
             appuser = AppUser.objects.get(user=request.user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
     form = RawAppointmentForm(request.POST or None)
     obj = None
@@ -404,17 +419,17 @@ def search_appointment_view(request):
         try:
             pac = Pacient.objects.get(pacient_number=pacient_number)
         except Pacient.DoesNotExist:
-            raise HttpResponse('Object Pacient does not exist!')
+            raise Http404('Object Pacient does not exist!')
 
         try:
             user = User.objects.get(username=medic_username)
         except User.DoesNotExist:
-            raise HttpResponse('Object User does not exist!')
+            raise Http404('Object User does not exist!')
 
         try:
             med = AppUser.objects.get(user=user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Medic does not exist!')
+            raise Http404('Object Medic does not exist!')
 
         obj = Appointment.objects.all()
 
@@ -442,7 +457,7 @@ def search_prescription_view(request):
         try:
             appuser = AppUser.objects.get(user=request.user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
     form = RawPrescriptionForm(request.POST)
     obj = None
@@ -453,23 +468,23 @@ def search_prescription_view(request):
         drug_id = form.cleaned_data['drug_id']
 
         try:
-            drug = Drug.objects.get(id=drug_id)
+            drug_id = Drug.objects.get(id=drug_id)
         except Drug.DoesNotExist:
-            raise HttpResponse('Object Drug does not exist!')
+            raise Http404('Object Drug does not exist!')
 
         try:
             pac = Pacient.objects.get(pacient_number=pacient_number)
         except Pacient.DoesNotExist:
-            raise HttpResponse('Object Pacient does not exist!')
+            raise Http404('Object Pacient does not exist!')
 
         try:
             user = User.objects.get(username=medic_username)
         except User.DoesNotExist:
-            raise HttpResponse('Object User does not exist!')
+            raise Http404('Object User does not exist!')
         try:
             med = AppUser.objects.get(user=user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Medic does not exist!')
+            raise Http404('Object Medic does not exist!')
 
         obj = Prescription.objects.all()
 
@@ -477,8 +492,8 @@ def search_prescription_view(request):
             obj = obj.filter(medic=med)
         if pac:
             obj = obj.filter(pacient=pac)
-        if drug:
-            obj = obj.filter(drug=drug)
+        if drug_id:
+            obj = obj.filter(drug=drug_id)
 
         form = RawPrescriptionForm()
     context = {
@@ -498,7 +513,7 @@ def search_exam_view(request):
         try:
             appuser = AppUser.objects.get(user=request.user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
     form = RawExamForm(request.POST or None)
     obj = None
@@ -511,17 +526,17 @@ def search_exam_view(request):
         try:
             pac = Pacient.objects.get(pacient_number=pacient_number)
         except Pacient.DoesNotExist:
-            raise HttpResponse('Object Pacient does not exist!')
+            raise Http404('Object Pacient does not exist!')
 
         try:
             user = User.objects.get(username=medic_username)
         except User.DoesNotExist:
-            raise HttpResponse('Object User does not exist!')
+            raise Http404('Object User does not exist!')
 
         try:
             med = AppUser.objects.get(user=user)
         except AppUser.DoesNotExist:
-            raise HttpResponse('Object Appuser does not exist!')
+            raise Http404('Object Appuser does not exist!')
 
         obj = Exam.objects.all()
 
